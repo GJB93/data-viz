@@ -56,11 +56,14 @@ void calculateMarqueTotals()
     //Add the total to the marqueTotal array
     marqueTotal.add(total);
     
-    maxTotal = getMax(total, maxTotal);
-    minTotal = getMin(total, minTotal);
     getMaxInd(total, maxTotal, m);
     getMinInd(total, minTotal, m);
+    
+    maxTotal = getMax(total, maxTotal);
+    minTotal = getMin(total, minTotal);
+    
     m++;
+    println(m + " " + maxTotal);
   }
 }//end calculateYearlyValues()
 
@@ -89,20 +92,21 @@ int getMin(int num, int currMin)
 }//end getMin()
 
 //Method for checking the max value index
-void getMaxInd(int num, int currMax, int i)
+void getMaxInd(int num, int currMax, int m)
 {
+  int temp = m;
   if(num > currMax)
   {
-    topInd = i;
+     topInd = temp;
   }//end if
 }//end getMaxInd()
 
 //Method for checking the min value
-void getMinInd(int num, int currMin, int i)
+void getMinInd(int num, int currMin, int m)
 {
   if(num < currMin)
   {
-    botInd = i;
+    botInd = m;
   }//end if
 }//end getMinInd()
 
@@ -190,39 +194,6 @@ void drawBarChart(ArrayList<Integer> d, ArrayList<String> text, int min, int max
   //Draw the axis for the bar chart
   drawAxis(d, text, rectWidth, min, max);
 }//end drawBarChart()
-
-void drawTrendLine(ArrayList<Integer> d, ArrayList<String> text, int min, int max)
-{
-  //Variables relevant to scaling the graph and finding the length of the lines
-  float borderW = width*0.1f; 
-  float borderH = height*0.1f;
-  float graphW = width - (borderW*2.0f);
-  float graphH = height - (borderH*2.0f);
-  
-  //There is one less line than there is data values
-  float rectWidth = graphW/ (float)(d.size()-1);
-  
-  //Refresh the screen
-  background(0);
-  stroke(255);
-  fill(255);
-  
-  //For each data value
-  for(int i=1; i<d.size(); i++)
-  {
-    //Use the map method to determine the scale of the line relevant to the graph width and height
-    float x1 = map(i-1, 0, d.size()-1, borderW, borderW+graphW);
-    float y1 = map(d.get(i-1), min, max, height-borderH, (height-borderH) - graphH);
-    float x2 = map(i, 0, d.size()-1, borderW, borderW+graphW);
-    float y2 = map(d.get(i), min, max, height-borderH, (height-borderH) - graphH);
-    
-    //Draw the line from the element before to the current element
-    line(x1, y1, x2, y2);
-  }//end for
-  
-  //Draw the axis for the trend line graph
-  drawAxis(d, text, rectWidth, min, max);
-}//end drawTrendLine
 
 //Method to read the data from the file and place it into the
 //respective ArrayList
