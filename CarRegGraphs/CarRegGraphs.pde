@@ -8,7 +8,7 @@ void setup()
 }//end setup()
 
 //Declare an ArrayList to hold each array of integer values
-ArrayList<ArrayList<Integer>> data = new ArrayList<ArrayList<Integer>>();
+ArrayList<MarqueData> data = new ArrayList<MarqueData>();
 
 //Declare an ArrayList of strings to hold the Marque of each car
 ArrayList<String> marques = new ArrayList<String>();
@@ -41,7 +41,7 @@ void calculateMarqueTotals()
 {
   int m = 0;
   //For each integer arraylist
-  for(ArrayList<Integer> values: data)
+  for(ArrayList<Integer> values: data.getYearRegNums())
   {
     //Reset total to zero
     int total = 0;
@@ -206,6 +206,7 @@ void loadData()
   {
     //Splitting each line at the comma
     String[] elements = s.split(",");
+    String temp;
     
     //Declare an Integer ArrayList to hold each value
     ArrayList<Integer> values = new ArrayList<Integer>();
@@ -225,11 +226,11 @@ void loadData()
       }//end if
       else
       {
-        marques.add(e);
+        temp = e;
         first = false;
       }//end else
     }//end foreach
     //Load the current line into the data ArrayList
-    data.add(values);
+    data.add(new MarqueData(temp, values));
   }//end foreach
 }//end loadData()

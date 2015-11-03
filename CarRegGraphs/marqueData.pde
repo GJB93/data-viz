@@ -14,4 +14,9 @@ class MarqueData
     marqueName = s;
     yearRegNums.addAll(a);
   }
+  
+  ArrayList getYearRegNums()
+  {
+    return yearRegNums;
+  }
 }
