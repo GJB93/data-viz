@@ -6,7 +6,7 @@ class MarqueData
   MarqueData()
   {
     marqueName = " ";
-    data = new ArrayList<Integer>();
+    yearRegNums = new ArrayList<Integer>();
   }
   
   MarqueData(String s, ArrayList<Integer> a)
