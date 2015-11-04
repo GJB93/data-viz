@@ -60,6 +60,7 @@ class MarqueData
     return total;
   }//end calculateYearlyValues()
   
+  //Method to find the highest value across all years
   int getMax(ArrayList<Integer> a)
   {
     int maxInit=Integer.MIN_VALUE;
@@ -75,6 +76,7 @@ class MarqueData
     return mx;
   }
   
+  //Method to find the lowest value across all years
   int getMin(ArrayList<Integer> a)
   {
     int minInit=Integer.MAX_VALUE;
