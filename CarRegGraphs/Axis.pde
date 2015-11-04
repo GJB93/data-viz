@@ -32,12 +32,8 @@ class Axis
     textIntH = borderH*0.2;
     verticalIncrement = 10;
     horizontalIncrement = graphW/ x.size();
-    dataRange = max;
-    numberInc = dataRange/ verticalIncrement;
+    numberInc = max/ verticalIncrement;
     tickIncrement = graphH/ verticalIncrement;
-    drawAxisLines();
-    drawXTicks();
-    drawYTicks();
   }
   
   void drawAxisLines()
@@ -56,7 +52,7 @@ class Axis
       translate(borderW+(i*horizontalIncrement), (height-borderH)+textIntW);
       rotate(-PI/2);
       fill(255);
-      text((xText.get(i)).substring(0,3), 0, 0);
+      text((xText.get(i)).substring(0,4), 0, 0);
       rotate(PI/2);
       translate(-(borderW+(i*horizontalIncrement)), -((height-borderH)+textIntW));
     }//end for

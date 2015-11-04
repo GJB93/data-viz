@@ -1,23 +1,30 @@
 void setup()
 {
-  size(500, 500);
+  size(900, 900);
+  for(int i=0; i<y.length;i++)
+  {
+    years.add(y[i]);
+  }
   loadData();
-  axis = new Axis(data.get(0).getRegNums(), marques, 500, width*0.1f, height*0.1f);
-  println(data.get(10).total);
+  graph = new Graph(marqueData.get(20).getRegNums(), years, marqueData.get(20).max, width*0.1f, height*0.1f);
+  println(marqueData.get(10).total);
 }//end setup()
 
 //Declare an ArrayList to hold each array of integer values
-ArrayList<MarqueData> data = new ArrayList<MarqueData>();
+ArrayList<MarqueData> marqueData = new ArrayList<MarqueData>();
 ArrayList<String> marques = new ArrayList<String>();
-Axis axis;
+Graph graph;
 
-String[] years = { "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015"};
+String[] y = {"2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015"};
+ArrayList<String> years = new ArrayList<String>();
 
 //Initialising a string with the name of the dataset file
 String filename = "carData20062015.csv";
 
 void draw()
 {
+  graph.drawBarChart();
+  text(marqueData.get(20).marqueName, width/2, 20);
 }//end draw()
 
 //Method for checking the max value
@@ -101,6 +108,6 @@ void loadData()
       }//end else
     }//end foreach
     //Load the marque data into the data ArrayList
-    data.add(new MarqueData(temp, values));
+    marqueData.add(new MarqueData(temp, values));
   }//end foreach
 }//end loadData()

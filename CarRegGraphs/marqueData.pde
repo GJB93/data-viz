@@ -3,6 +3,7 @@ class MarqueData
   //Setting the fields for the class
   String marqueName;
   int total;
+  int max;
   //This ArrayList holds all the yearly registration numbers for the car marque
   ArrayList<Integer> regNums;
   
@@ -21,6 +22,7 @@ class MarqueData
     regNums = new ArrayList<Integer>();
     setRegNums(a);
     total = calculateTotal(regNums);
+    max = getMax(regNums);
   }
   
   //Accessor for the regNums ArrayList
@@ -53,4 +55,19 @@ class MarqueData
     
     return total;
   }//end calculateYearlyValues()
+  
+  int getMax(ArrayList<Integer> a)
+  {
+    int maxInit=Integer.MIN_VALUE;
+    int mx = maxInit;
+    //For each value
+    for(int v:a)
+    {
+      if(v > mx)
+      {
+        mx = v;
+      }
+    }//end for
+    return mx;
+  }
 }
