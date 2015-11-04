@@ -2,6 +2,7 @@ void setup()
 {
   size(500, 500);
   loadData();
+  println(data.get(0).getYearRegNums());
 }//end setup()
 
 //Declare an ArrayList to hold each array of integer values
@@ -9,8 +10,6 @@ ArrayList<MarqueData> data = new ArrayList<MarqueData>();
 
 //Initialising a string with the name of the dataset file
 String filename = "carData20062015.csv";
-
-
 
 void draw()
 {
@@ -22,7 +21,6 @@ void loadData()
 {
   //Load a String array with each line of the dataset file
   String[] lines = loadStrings(filename);
-  
   for(String s:lines)
   {
     //Splitting each line at the comma
