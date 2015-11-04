@@ -35,6 +35,11 @@ class MarqueData
     regNums.addAll(a);
   }
   
+  String getMarqueName()
+  {
+    return marqueName;
+  }
+  
   //Method to calculate the total registration numbers
   int calculateTotal(ArrayList<Integer> a)
   {

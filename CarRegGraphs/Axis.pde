@@ -1,7 +1,7 @@
 class Axis
 {
   ArrayList<Integer> yText;
-  String[] xText;
+  ArrayList<String> xText;
   int max;
   float borderW; 
   float borderH;
@@ -16,11 +16,12 @@ class Axis
   float numberInc;
   float tickIncrement;
   
-  Axis(ArrayList<Integer> y, String[] x, int mx)
+  Axis(ArrayList<Integer> y, ArrayList<String> x, int mx)
   {
     yText = new ArrayList<Integer>();
-    xText = x;
+    xText = new ArrayList<String>();
     yText.addAll(y);
+    xText.addAll(x);
     max = mx;
     borderW = width*0.1f; 
     borderH = height*0.1f;
@@ -30,7 +31,7 @@ class Axis
     textIntW = borderW*0.7;
     textIntH = borderH*0.2;
     verticalIncrement = 10;
-    horizontalIncrement = graphW/ x.length;
+    horizontalIncrement = graphW/ x.size();
     dataRange = max;
     numberInc = dataRange/ verticalIncrement;
     tickIncrement = graphH/ verticalIncrement;
@@ -49,13 +50,13 @@ class Axis
   {
     textSize(10);
     textAlign(LEFT, CENTER);
-    for(int i=0; i<xText.length; i++)
+    for(int i=0; i<xText.size(); i++)
     {
       line(borderW+(horizontalIncrement*i), (height-borderH)+tickW, borderW+(horizontalIncrement*i), height-borderH);
       translate(borderW+(i*horizontalIncrement), (height-borderH)+textIntW);
       rotate(-PI/2);
       fill(255);
-      text(xText[i], 0, 0);
+      text((xText.get(i)).substring(0,3), 0, 0);
       rotate(PI/2);
       translate(-(borderW+(i*horizontalIncrement)), -((height-borderH)+textIntW));
     }//end for

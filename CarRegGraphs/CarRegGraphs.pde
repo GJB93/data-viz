@@ -2,12 +2,13 @@ void setup()
 {
   size(500, 500);
   loadData();
-  axis = new Axis(data.get(0).getRegNums(), years, 500);
+  axis = new Axis(data.get(0).getRegNums(), marques, 500);
   println(data.get(10).total);
 }//end setup()
 
 //Declare an ArrayList to hold each array of integer values
 ArrayList<MarqueData> data = new ArrayList<MarqueData>();
+ArrayList<String> marques = new ArrayList<String>();
 Axis axis;
 
 String[] years = { "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015"};
@@ -94,6 +95,7 @@ void loadData()
       else
       {
         //If the first value is read, read it as the marque name
+        marques.add(e);
         temp = e;
         first = false;
       }//end else
