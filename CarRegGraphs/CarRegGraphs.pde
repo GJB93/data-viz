@@ -2,7 +2,7 @@ void setup()
 {
   size(500, 500);
   loadData();
-  println(data.get(0).getYearRegNums());
+  println(data.get(0).getRegNums().get(9));
 }//end setup()
 
 //Declare an ArrayList to hold each array of integer values
@@ -25,6 +25,8 @@ void loadData()
   {
     //Splitting each line at the comma
     String[] elements = s.split(",");
+    
+    //String to hold the name of the marque so that it can be set using the object constructor
     String temp = "";
     
     //Declare an Integer ArrayList to hold each value
@@ -45,11 +47,12 @@ void loadData()
       }//end if
       else
       {
+        //If the first value is read, read it as the marque name
         temp = e;
         first = false;
       }//end else
     }//end foreach
-    //Load the current line into the data ArrayList
+    //Load the marque data into the data ArrayList
     data.add(new MarqueData(temp, values));
   }//end foreach
 }//end loadData()
