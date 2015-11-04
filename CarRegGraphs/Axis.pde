@@ -37,9 +37,11 @@ class Axis
     tickIncrement = graphH/ verticalIncrement;
   }
   
-  //Drawing the axis lines
-  line(borderW, (height-borderH) - graphH, borderW, height-borderH);
-  line(borderW, (height-borderH), borderW+graphW, height-borderH);
+  void drawAxisLines()
+  {
+    line(borderW, (height-borderH) - graphH, borderW, height-borderH);
+    line(borderW, (height-borderH), borderW+graphW, height-borderH);
+  }
   
   //Aligning and sizing the text for years
   textAlign(CENTER, CENTER);
