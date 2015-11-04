@@ -2,11 +2,12 @@ void setup()
 {
   size(500, 500);
   loadData();
-  println(data.get(0).getRegNums().get(9));
+  println(data.get(10).total);
 }//end setup()
 
 //Declare an ArrayList to hold each array of integer values
 ArrayList<MarqueData> data = new ArrayList<MarqueData>();
+
 
 //Initialising a string with the name of the dataset file
 String filename = "carData20062015.csv";
@@ -14,6 +15,48 @@ String filename = "carData20062015.csv";
 void draw()
 {
 }//end draw()
+
+//Method for checking the max value
+int getMax(int num, int currMax)
+{
+  int temp = currMax;
+  if(num > currMax)
+  {
+    temp = num;
+  }//end if
+  
+  return temp;
+}//end getMax()
+
+//Method for checking the min value
+int getMin(int num, int currMin)
+{
+  int temp = currMin;
+  if(num < currMin)
+  {
+    temp = num;
+  }//end if
+  
+  return temp;
+}//end getMin()
+
+//Method for checking the max value index
+void getMaxInd(int num, int currMax, int i)
+{
+  if(num > currMax)
+  {
+    //topInd = i;
+  }//end if
+}//end getMaxInd()
+
+//Method for checking the min value
+void getMinInd(int num, int currMin, int i)
+{
+  if(num < currMin)
+  {
+    //botInd = i;
+  }//end if
+}//end getMinInd()
 
 //Method to read the data from the file and place it into the
 //respective ArrayList
