@@ -16,15 +16,15 @@ class Axis
   float numberInc;
   float tickIncrement;
   
-  Axis(ArrayList<Integer> y, ArrayList<String> x, int mx)
+  Axis(ArrayList<Integer> y, ArrayList<String> x, int mx, float bW, float bH)
   {
     yText = new ArrayList<Integer>();
     xText = new ArrayList<String>();
     yText.addAll(y);
     xText.addAll(x);
     max = mx;
-    borderW = width*0.1f; 
-    borderH = height*0.1f;
+    borderW = bW; 
+    borderH = bH;
     graphW = width - (borderW*2.0f);
     graphH = height - (borderH*2.0f);
     tickW = borderW*0.1;

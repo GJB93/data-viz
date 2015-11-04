@@ -2,7 +2,7 @@ void setup()
 {
   size(500, 500);
   loadData();
-  axis = new Axis(data.get(0).getRegNums(), marques, 500);
+  axis = new Axis(data.get(0).getRegNums(), marques, 500, width*0.1f, height*0.1f);
   println(data.get(10).total);
 }//end setup()
 
