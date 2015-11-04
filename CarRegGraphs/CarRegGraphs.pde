@@ -2,12 +2,15 @@ void setup()
 {
   size(500, 500);
   loadData();
+  axis = new Axis(data.get(0).getRegNums(), years, 500);
   println(data.get(10).total);
 }//end setup()
 
 //Declare an ArrayList to hold each array of integer values
 ArrayList<MarqueData> data = new ArrayList<MarqueData>();
+Axis axis;
 
+String[] years = { "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015"};
 
 //Initialising a string with the name of the dataset file
 String filename = "carData20062015.csv";
