@@ -48,6 +48,13 @@ class Axis
     tickIncrement = graphH/ verticalIncrement;
   }
   
+  void drawAxis()
+  {
+    drawAxisLines();
+    drawXTicks();
+    drawYTicks();
+  }
+  
   //Method to draw the vertical and horizontal axis lines
   void drawAxisLines()
   {

@@ -1,6 +1,8 @@
 void setup()
 {
   size(900, 900);
+  borderW = width*0.1f;
+  borderH = height*0.1f;
   
   //Adding each year to the year ArrayList
   for(int i=0; i<y.length;i++)
@@ -34,8 +36,10 @@ void setup()
   //minimum totals found earlier
   for(int i=0; i<marqueData.size(); i++)
   {
-    graph.add(new Graph(marqueData.get(i).getRegNums(), years, maxTotal, minTotal, width*0.1f, height*0.1f, lineColours[i]));
+    graph.add(new Graph(marqueData.get(i).getRegNums(), years, maxTotal, minTotal, borderW, borderH, lineColours[i]));
   }
+  
+  axis = new Axis(marqueData.get(0).getRegNums(), years, maxTotal, minTotal, borderW, borderH, (width - (borderW*2.0f))/(marqueData.get(0).getRegNums().size() -1));
   
   //Drawing every graph, to show how the trend lines compare to one another
   background(0);
@@ -43,6 +47,7 @@ void setup()
   {
     graph.get(i).drawTrendLine();
   }
+  axis.drawAxis();
 }//end setup()
 
 //Declare an ArrayList to hold each array of integer values
@@ -50,6 +55,7 @@ ArrayList<MarqueData> marqueData = new ArrayList<MarqueData>();
 
 //Declare an ArrayList to hold a graph for each car marque
 ArrayList<Graph> graph = new ArrayList<Graph>();
+Axis axis;
 
 //Create an array of colours for the trend lines
 color[] lineColours;
@@ -60,6 +66,9 @@ ArrayList<String> years = new ArrayList<String>();
 
 //Initialising a string with the name of the dataset file
 String filename = "carData20062015.csv";
+
+float borderW;
+float borderH;
 
 //Initialising values for finding the max and min total values
 int maxInit=Integer.MIN_VALUE;

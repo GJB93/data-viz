@@ -1,7 +1,7 @@
 class Graph
 {
   //Creating fields needed for drawing a graph
-  Axis axis;
+  //Axis axis;
   ArrayList<Integer> data;
   ArrayList<String> names;
   int max;
@@ -49,6 +49,7 @@ class Graph
       rect(x, y, rectWidth, (height-borderH)-y);
     }//end for 
     
+    /*
     //Create a new axis for the bar chart
     axis = new Axis(data, names, max, min, borderW, borderH, rectWidth);
     
@@ -56,6 +57,7 @@ class Graph
     axis.drawAxisLines();
     axis.drawXTicks();
     axis.drawYTicks();
+    */
   }
   
   void drawTrendLine()
@@ -79,6 +81,7 @@ class Graph
       line(x1, y1, x2, y2);
     }//end for
     
+    /*
     //Create a new axis for the trend line graph
     axis = new Axis(data, names, max, min, borderW, borderH, rectWidth);
     
@@ -86,5 +89,6 @@ class Graph
     axis.drawAxisLines();
     axis.drawXTicks();
     axis.drawYTicks();
+    */
   }
 }
