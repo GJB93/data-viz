@@ -12,18 +12,18 @@ class MarqueData
   //Constructors for the MarqueData class
   MarqueData()
   {
-    marqueName = " ";
-    total = 0;
-    max = 0;
-    min = 0;
-    regNums = new ArrayList<Integer>();
+    this("");
   }
   
-  MarqueData(String s, ArrayList<Integer> a)
+  MarqueData(String line)
   {
-    marqueName = s;
-    regNums = new ArrayList<Integer>();
-    setRegNums(a);
+    String[] fields = line.split(",");
+    this.marqueName = fields[0];;
+    this.regNums = new ArrayList<Integer>();
+    for(int i=1; i<fields.length; i++)
+    {
+      this.regNums.add(Integer.parseInt(fields[i]));
+    }
     total = calculateTotal(regNums);
     max = getMax(regNums);
     min = getMin(regNums);
