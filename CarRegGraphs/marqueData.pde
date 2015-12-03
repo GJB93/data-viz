@@ -29,23 +29,6 @@ class MarqueData
     min = getMin(regNums);
   }
   
-  //Accessor for the regNums ArrayList
-  ArrayList getRegNums()
-  {
-    return regNums;
-  }
-  
-  //Mutator for the regNums ArrayList
-  void setRegNums(ArrayList<Integer> a)
-  {
-    regNums.addAll(a);
-  }
-  
-  String getMarqueName()
-  {
-    return marqueName;
-  }
-  
   //Method to calculate the total registration numbers
   int calculateTotal(ArrayList<Integer> a)
   {

@@ -36,10 +36,10 @@ void setup()
   //minimum totals found earlier
   for(int i=0; i<marqueData.size(); i++)
   {
-    graph.add(new Graph(marqueData.get(i).getRegNums(), years, maxTotal, minTotal, borderW, borderH, lineColours[i]));
+    graph.add(new Graph(marqueData.get(i).regNums, years, maxTotal, minTotal, borderW, borderH, lineColours[i]));
   }
   
-  axis = new Axis(marqueData.get(0).getRegNums(), years, maxTotal, minTotal, borderW, borderH, (width - (borderW*2.0f))/(marqueData.get(0).getRegNums().size() -1));
+  axis = new Axis(marqueData.get(0).regNums, years, maxTotal, minTotal, borderW, borderH, (width - (borderW*2.0f))/(marqueData.get(0).regNums.size() -1));
   
   //Drawing every graph, to show how the trend lines compare to one another
   background(0);
