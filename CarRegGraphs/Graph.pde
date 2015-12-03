@@ -11,33 +11,36 @@ class Graph
   float graphW;
   float graphH;
   float rectWidth;
-  color lineC;
+  color c;
+  
+  Graph()
+  {
+    this(new ArrayList<Integer>(), new ArrayList<String>(), 0, 0, 0, 0, 0);
+  }
   
   //Constructor recieves the data, the value to map the data against, the maximum and minimum values for scaling the graph,
   //the border values for the graph and the colour to use for the trend lines
-  Graph(ArrayList<Integer> d, ArrayList<String> n, int mx, int mn, float bW, float bH, color c)
+  Graph(ArrayList<Integer> data, ArrayList<String> names, int max, int min, float borderW, float borderH, color c)
   {
-    data = new ArrayList<Integer>();
-    names = new ArrayList<String>();
-    data.addAll(d);
-    names.addAll(n);
-    borderW = bW; 
-    borderH = bH;
-    max = mx;
-    min = mn;
+    this.data = new ArrayList<Integer>();
+    this.names = new ArrayList<String>();
+    this.data.addAll(data);
+    this.names.addAll(names);
+    this.borderW = borderW; 
+    this.borderH = borderH;
+    this.max = max;
+    this.min = min;
     graphW = width - (borderW*2.0f);
     graphH = height - (borderH*2.0f);
     rectWidth = graphW/ (float) (data.size());
-    lineC = c;
+    this.c = c;
   }
   
   //Method to draw a bar chart using the data input
   void drawBarChart()
   {
-    //Set the colour for drawing the bars
     stroke(255);
-    fill(127);
-    
+    fill(c);
     //For each element of data
     for(int i=0; i<data.size(); i++)
     {
@@ -66,7 +69,7 @@ class Graph
     rectWidth = graphW/ (float)(data.size()-1);
     
     //Set the colour for the line
-    stroke(lineC);
+    stroke(c);
     
     //For each data value
     for(int i=1; i<data.size(); i++)

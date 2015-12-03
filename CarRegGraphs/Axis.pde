@@ -18,31 +18,36 @@ class Axis
   float numberInc;
   float tickIncrement;
   
+  Axis()
+  {
+    this(new ArrayList<Integer>(), new ArrayList<String>(), 0, 0, 0, 0, 0);
+  }
+  
   //Constructor for the Axis class
-  Axis(ArrayList<Integer> y, ArrayList<String> x, int mx, int mn, float bW, float bH, float rW)
+  Axis(ArrayList<Integer> yText, ArrayList<String> xText, int max, int min, float borderW, float borderH, float rectW)
   {
     //Initialise the yText and xText ArrayLists
-    yText = new ArrayList<Integer>();
-    xText = new ArrayList<String>();
+    this.yText = new ArrayList<Integer>();
+    this.xText = new ArrayList<String>();
     
     //Copy the data entered to the constructor into the class' ArrayLists
-    yText.addAll(y);
-    xText.addAll(x);
+    this.yText.addAll(yText);
+    this.xText.addAll(xText);
     
     //Set the max and min values
-    max = mx;
-    min = mn;
+    this.max = max;
+    this.min = min;
     
     //Set the values for drawing the graph
-    borderW = bW; 
-    borderH = bH;
+    this.borderW = borderW; 
+    this.borderH = borderH;
     graphW = width - (borderW*2.0f);
     graphH = height - (borderH*2.0f);
     tickW = borderW*0.1;
     textIntW = borderW*0.7;
     textIntH = borderH*0.2;
     verticalIncrement = 10;
-    horizontalIncrement = rW;
+    horizontalIncrement = rectW;
     dataRange = max-min;
     numberInc = max/ verticalIncrement;
     tickIncrement = graphH/ verticalIncrement;

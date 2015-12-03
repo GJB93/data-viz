@@ -7,7 +7,7 @@ ArrayList<Integer> yearlyTotals = new ArrayList<Integer>();
 Axis axis;
 
 //Create an array of colours for the trend lines
-color[] lineColours;
+color[] marqueLineColours, yearLineColours;
 
 //Creating a string array to copy into the years ArrayList
 String[] y = {"2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015"};
@@ -43,7 +43,8 @@ void setup()
   loadData();
   
   //Setting the size for the colour array
-  lineColours = new color[marqueData.size()];
+  marqueLineColours = new color[marqueData.size()];
+  yearLineColours = new color[years.size()];
   
   drawYearlyTotalGraph();
   
@@ -98,12 +99,12 @@ void drawYearlyTotalGraph()
     {
       minYearly = yearlyTotals.get(i);
     }
-    lineColours[i] = color(random(255), random(255), random(255));
+    yearLineColours[i] = color(random(255), random(255), random(255));
   }
   
   for(int i=0; i<yearlyTotals.size(); i++)
   {
-    graph.add(new Graph(yearlyTotals, years, maxYearly, minYearly, borderW, borderH, lineColours[i]));
+    graph.add(new Graph(yearlyTotals, years, maxYearly, minYearly, borderW, borderH, yearLineColours[i]));
   }
   
   axis = new Axis(yearlyTotals, years, maxYearly, minYearly, borderW, borderH, (width - (borderW*2.0f))/(marqueData.get(0).regNums.size()));
@@ -133,7 +134,7 @@ void drawMarqueGraphs()
     {
       minTotal = marqueData.get(i).min;
     }
-    lineColours[i] = color(random(255), random(255), random(255));
+    marqueLineColours[i] = color(random(255), random(255), random(255));
   }
   
   
@@ -142,7 +143,7 @@ void drawMarqueGraphs()
   //minimum totals found earlier
   for(int i=0; i<marqueData.size(); i++)
   {
-    graph.add(new Graph(marqueData.get(i).regNums, years, maxTotal, minTotal, borderW, borderH, lineColours[i]));
+    graph.add(new Graph(marqueData.get(i).regNums, years, maxTotal, minTotal, borderW, borderH, marqueLineColours[i]));
   }
   
   axis = new Axis(marqueData.get(0).regNums, years, maxTotal, minTotal, borderW, borderH, (width - (borderW*2.0f))/(marqueData.get(0).regNums.size() -1)); 
