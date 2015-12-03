@@ -24,6 +24,8 @@ int maxInit=Integer.MIN_VALUE;
 int minInit=Integer.MAX_VALUE;
 int maxTotal = maxInit;
 int minTotal = minInit;
+int minYearly = minInit;
+int maxYearly = maxInit;
 
 void setup()
 {
@@ -42,6 +44,31 @@ void setup()
   
   //Setting the size for the colour array
   lineColours = new color[marqueData.size()];
+  
+  drawYearlyTotalGraph();
+  
+  //drawMarqueGraphs();
+}//end setup()
+
+void draw()
+{
+  
+}//end draw()
+
+//Method to read the data from the file and place it into the MarqueData ArrayList
+void loadData()
+{
+  //Load a String array with each line of the dataset file
+  String[] lines = loadStrings(filename);
+  for(String s:lines)
+  {
+    MarqueData marque = new MarqueData(s);
+    marqueData.add(marque);
+  }//end foreach
+}//end loadData()
+
+void drawYearlyTotalGraph()
+{
   int total;
   
   for(int i=0; i<marqueData.get(0).regNums.size(); i++)
@@ -62,19 +89,37 @@ void setup()
   
   for(int i=0; i<yearlyTotals.size(); i++)
   {
-    if(yearlyTotals.get(i) > maxTotal)
+    if(yearlyTotals.get(i) > maxYearly)
     {
-      maxTotal = yearlyTotals.get(i);
+      maxYearly = yearlyTotals.get(i);
     }
     
-    if(yearlyTotals.get(i) < minTotal)
+    if(yearlyTotals.get(i) < minYearly)
     {
-      minTotal = yearlyTotals.get(i);
+      minYearly = yearlyTotals.get(i);
     }
     lineColours[i] = color(random(255), random(255), random(255));
   }
   
-  /*
+  for(int i=0; i<yearlyTotals.size(); i++)
+  {
+    graph.add(new Graph(yearlyTotals, years, maxYearly, minYearly, borderW, borderH, lineColours[i]));
+  }
+  
+  axis = new Axis(yearlyTotals, years, maxYearly, minYearly, borderW, borderH, (width - (borderW*2.0f))/(marqueData.get(0).regNums.size()));
+  
+  //Drawing every graph, to show how the trend lines compare to one another
+  background(0);
+  
+  for(int i=0; i<graph.size(); i++)
+  {
+    graph.get(i).drawBarChart();
+  }
+  axis.drawAxis();
+}
+
+void drawMarqueGraphs()
+{
   //Finding the maximum and minimum total values across all marques, as well as
   //setting the colour for each trend line
   for(int i=0; i<marqueData.size(); i++)
@@ -90,9 +135,9 @@ void setup()
     }
     lineColours[i] = color(random(255), random(255), random(255));
   }
-  */
   
-  /*
+  
+  
   //Creating the graph for each marque, and scaling it according to the maximum and
   //minimum totals found earlier
   for(int i=0; i<marqueData.size(); i++)
@@ -100,37 +145,14 @@ void setup()
     graph.add(new Graph(marqueData.get(i).regNums, years, maxTotal, minTotal, borderW, borderH, lineColours[i]));
   }
   
-  axis = new Axis(marqueData.get(0).regNums, years, maxTotal, minTotal, borderW, borderH, (width - (borderW*2.0f))/(marqueData.get(0).regNums.size() -1));
-  */
+  axis = new Axis(marqueData.get(0).regNums, years, maxTotal, minTotal, borderW, borderH, (width - (borderW*2.0f))/(marqueData.get(0).regNums.size() -1)); 
   
-  for(int i=0; i<yearlyTotals.size(); i++)
-  {
-    graph.add(new Graph(yearlyTotals, years, maxTotal, minTotal, borderW, borderH, lineColours[i]));
-  }
-  
-  axis = new Axis(yearlyTotals, years, maxTotal, minTotal, borderW, borderH, (width - (borderW*2.0f))/(marqueData.get(0).regNums.size()));
   //Drawing every graph, to show how the trend lines compare to one another
   background(0);
+  
   for(int i=0; i<graph.size(); i++)
   {
-    graph.get(i).drawBarChart();
+    graph.get(i).drawTrendLine();
   }
   axis.drawAxis();
-}//end setup()
-
-void draw()
-{
-  
-}//end draw()
-
-//Method to read the data from the file and place it into the MarqueData ArrayList
-void loadData()
-{
-  //Load a String array with each line of the dataset file
-  String[] lines = loadStrings(filename);
-  for(String s:lines)
-  {
-    MarqueData marque = new MarqueData(s);
-    marqueData.add(marque);
-  }//end foreach
-}//end loadData()
+}
