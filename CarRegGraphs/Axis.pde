@@ -97,7 +97,7 @@ class Axis
     //For each tick increment, draw a tick and the registration numbers scaled between the max and minimum value
     for(float i=0; i<= verticalIncrement; i++)
     {
-      line(borderW, (height-borderH)-(tickIncrement*i), borderW-tickW, (height-borderH)-(tickIncrement*i));
+      line(width-borderW, (height-borderH)-(tickIncrement*i), borderW-tickW, (height-borderH)-(tickIncrement*i));
       text(int((numberInc*i)+min), borderW-textIntH, (height-borderH)-(tickIncrement*i));
     }//end for
   }
