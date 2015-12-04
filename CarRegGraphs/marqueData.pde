@@ -7,6 +7,7 @@ class MarqueData
   int min;
   //This ArrayList holds all the yearly registration numbers for the car marque
   ArrayList<Integer> regNums;
+  ArrayList<String> years;
   
   
   //Constructors for the MarqueData class
@@ -18,7 +19,14 @@ class MarqueData
   MarqueData(String line)
   {
     String[] fields = line.split(",");
-    this.marqueName = fields[0];;
+    this.marqueName = fields[0];
+    this.years = new ArrayList<String>();
+    //Creating a string array to copy into the years ArrayList
+    String[] y = {"2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015"};
+    for(int i=0; i<y.length;i++)
+    {
+      years.add(y[i]);
+    }
     this.regNums = new ArrayList<Integer>();
     for(int i=1; i<fields.length; i++)
     {

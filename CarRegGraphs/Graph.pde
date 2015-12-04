@@ -94,4 +94,9 @@ class Graph
     axis.drawYTicks();
     */
   }
+  
+  void drawSlopeGraph()
+  {
+    
+  }
 }
