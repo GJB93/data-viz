@@ -28,17 +28,7 @@ void setup()
   //Loading the data from the .csv file
   loadData();
   
-  for(int i=0; i<marqueData.size(); i++)
-  {
-    totals2007.add(marqueData.get(i).regNums.get(1));
-    totals2015.add(marqueData.get(i).regNums.get(9));
-    topMarques2007.add(marqueData.get(i).marqueName);
-    topMarques2015.add(marqueData.get(i).marqueName);
-    println("Looping");
-  }
-  
-  quicksort(totals2007, 0, totals2007.size()-1); //<>//
-  quicksort(totals2015, 0, totals2015.size()-1);
+  quicksort(marqueData, 0, marqueData.size()-1); //<>//
   
   for(int i=0; i<totals2007.size(); i++)
   {
@@ -157,7 +147,7 @@ void drawMarqueGraphs()
   axis.drawAxis();
 }
 
-void quicksort(ArrayList<Integer> array, int low, int high)
+void quicksort(ArrayList<MarqueData> array, int low, int high)
 {
   int index = partition(array, low, high);
   if(low < index-1)
@@ -170,21 +160,21 @@ void quicksort(ArrayList<Integer> array, int low, int high)
   }
 }
 
-int partition(ArrayList<Integer> array, int low, int high)
+int partition(ArrayList<MarqueData> array, int low, int high)
 {
   int i = low;
   int j = high;
-  int temp;
-  int pivot = array.get((low+high)/2);
+  MarqueData temp;
+  int pivot = array.get((low+high)/2).total;
   
   while(i <= j)
   {
-    while(array.get(i) < pivot)
+    while(array.get(i).total < pivot)
     {
       i++;
     }
     
-    while(array.get(j) > pivot)
+    while(array.get(j).total > pivot)
     {
       j--;
     }
