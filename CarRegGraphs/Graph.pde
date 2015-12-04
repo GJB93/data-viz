@@ -4,6 +4,7 @@ class Graph
   //Axis axis;
   ArrayList<Integer> data;
   ArrayList<String> names;
+  ArrayList<MarqueData> mData;
   int max;
   int min;
   float borderW = width*0.1f; 
@@ -26,6 +27,20 @@ class Graph
     this.names = new ArrayList<String>();
     this.data.addAll(data);
     this.names.addAll(names);
+    this.borderW = borderW; 
+    this.borderH = borderH;
+    this.max = max;
+    this.min = min;
+    graphW = width - (borderW*2.0f);
+    graphH = height - (borderH*2.0f);
+    rectWidth = graphW/ (float) (data.size());
+    this.c = c;
+  }
+  
+  Graph(ArrayList<MarqueData> data, int max, int min, float borderW, float borderH, color c)
+  {
+    this.mData = new ArrayList<MarqueData>();
+    this.mData.addAll(data);
     this.borderW = borderW; 
     this.borderH = borderH;
     this.max = max;
@@ -97,6 +112,36 @@ class Graph
   
   void drawSlopeGraph()
   {
+    stroke(c);
+    int numYearsPre = 3;
+    int numYearsPost = 7;
     
+    for(int i=mData.size()-1; i>mData.size()-11; i--)
+    {
+      int preRecessionTotal = 0;
+      int postRecessionTotal = 0;
+      for(int j=0; j<3; j++)
+      {
+        preRecessionTotal += mData.get(i).regNums.get(j);
+      }
+      int preRecessionAvg = preRecessionTotal/numYearsPre;
+      for(int j=numYearsPre; j<mData.get(0).regNums.size(); j++)
+      {
+        postRecessionTotal += mData.get(i).regNums.get(j);
+      }
+      int postRecessionAvg = postRecessionTotal/numYearsPost;
+      
+      float x1 = map(width*0.25f, 0, width, borderW, borderW+graphW);
+      float y1 = map(preRecessionAvg, 3000, 25000, height-borderH, (height-borderH) - graphH);
+      float x2 = map(width-(width*0.25f), 0, width, borderW, borderW+graphW);
+      float y2 = map(postRecessionAvg, 3000, 25000, height-borderH, (height-borderH) - graphH);
+      textAlign(LEFT, CENTER);
+      textSize(8);
+      line(x1, height-borderH, x1, (height-borderH) - graphH);
+      line(x2, height-borderH, x2, (height-borderH) - graphH);
+      text(mData.get(i).marqueName, x1-70, y1);
+      text(mData.get(i).marqueName, x2+10, y2);
+      line(x1, y1, x2, y2);
+    }
   }
 }

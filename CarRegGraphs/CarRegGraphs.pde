@@ -28,17 +28,14 @@ void setup()
   //Loading the data from the .csv file
   loadData();
   
-  quicksort(marqueData, 0, marqueData.size()-1); //<>//
+  quicksort(marqueData, 0, marqueData.size()-1);
   
-  for(int i=0; i<totals2007.size(); i++)
-  {
-    println(totals2007.get(i));
-    println(totals2015.get(i));
-  }
+  Graph slope = new Graph(marqueData, maxYearly, minYearly, borderW, borderH, color(random(255), random(255), random(255)));
+  background(0);
+  slope.drawSlopeGraph();
+  //drawYearlyTotalGraph();
   
-  drawYearlyTotalGraph();
-  
-  //drawMarqueGraphs();
+  //drawMarqueGraphs(); //<>//
 }//end setup()
 
 void draw()
