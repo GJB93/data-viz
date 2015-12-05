@@ -13,14 +13,16 @@ class Graph
   float graphH;
   float rectWidth;
   color c;
+  String title;
   
   Graph()
   {
-    this(new ArrayList<Integer>(), new ArrayList<String>(), 0, 0, 0, 0, 0);
+    this("", 0, 0, 0, 0, 0, color(0));
   }
   
-  Graph(int dataSize, int max, int min, float borderW, float borderH, color c)
+  Graph(String title, int dataSize, int max, int min, float borderW, float borderH, color c)
   {
+    this.title = title;
     this.borderW = borderW; 
     this.borderH = borderH;
     this.max = max;
@@ -33,18 +35,18 @@ class Graph
   
   //Constructor recieves the data, the value to map the data against, the maximum and minimum values for scaling the graph,
   //the border values for the graph and the colour to use for the trend lines
-  Graph(ArrayList<Integer> data, ArrayList<String> names, int max, int min, float borderW, float borderH, color c)
+  Graph(String title, ArrayList<Integer> data, ArrayList<String> names, int max, int min, float borderW, float borderH, color c)
   {
-    this(data.size(), max, min, borderW, borderH, c);
+    this(title, data.size(), max, min, borderW, borderH, c);
     this.data = new ArrayList<Integer>();
     this.names = new ArrayList<String>();
     this.data.addAll(data);
     this.names.addAll(names);
   }
   
-  Graph(ArrayList<MarqueData> data, int max, int min, float borderW, float borderH, color c)
+  Graph(String title, ArrayList<MarqueData> data, int max, int min, float borderW, float borderH, color c)
   {
-    this(data.size(), max, min, borderW, borderH, c);
+    this(title, data.size(), max, min, borderW, borderH, c);
     this.mData = new ArrayList<MarqueData>();
     this.mData.addAll(data);
   }
@@ -52,6 +54,10 @@ class Graph
   //Method to draw a bar chart using the data input
   void drawBarChart()
   {
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(12);
+    text(title, width/2, borderH*0.5f);
     stroke(255);
     fill(c);
     //For each element of data
@@ -78,6 +84,10 @@ class Graph
   
   void drawTrendLine()
   {
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(12);
+    text(title, width/2, borderH*0.5f);
     //There is one less line than there is data values when drawing a trend line graph
     rectWidth = graphW/ (float)(data.size()-1);
     
@@ -110,10 +120,16 @@ class Graph
   
   void drawSlopeGraph()
   {
-    stroke(c);
     int numYearsPre = 3;
     int numYearsPost = 7;
+    float x1 = map(width*0.25f, 0, width, borderW, borderW+graphW);
+    float x2 = map(width-(width*0.25f), 0, width, borderW, borderW+graphW);
+    float tWidth = 50;
+    axis = new Axis();
     
+    axis.drawSlopeAxis();
+    
+    textSize(8);
     for(int i=mData.size()-1; i>mData.size()-11; i--)
     {
       int preRecessionTotal = 0;
@@ -129,16 +145,16 @@ class Graph
       }
       int postRecessionAvg = postRecessionTotal/numYearsPost;
       
-      float x1 = map(width*0.25f, 0, width, borderW, borderW+graphW);
-      float y1 = map(preRecessionAvg, 3000, 25000, height-borderH, (height-borderH) - graphH);
-      float x2 = map(width-(width*0.25f), 0, width, borderW, borderW+graphW);
-      float y2 = map(postRecessionAvg, 3000, 25000, height-borderH, (height-borderH) - graphH);
-      textAlign(LEFT, CENTER);
-      textSize(8);
-      line(x1, height-borderH, x1, (height-borderH) - graphH);
-      line(x2, height-borderH, x2, (height-borderH) - graphH);
-      text(mData.get(i).marqueName, x1-70, y1);
-      text(mData.get(i).marqueName, x2+10, y2);
+      float y1 = map(preRecessionAvg, min, max, height-borderH, (height-borderH) - graphH);
+      float y2 = map(postRecessionAvg, min, max, height-borderH, (height-borderH) - graphH);
+      
+      this.c = color(random(127, 255), random(127, 255), random(127, 255));
+      stroke(c);
+      fill(c);
+      text(mData.get(i).marqueName + " : " + preRecessionAvg, x1-tWidth, y1);
+     
+      text(mData.get(i).marqueName + " : " + postRecessionAvg, x2+tWidth, y2);
+      
       line(x1, y1, x2, y2);
     }
   }

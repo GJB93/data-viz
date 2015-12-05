@@ -21,7 +21,7 @@ class Axis
   
   Axis()
   {
-    this(0, 0, 0, 0, 0);
+    this(0, width, width*0.1f, height*0.1f, 0);
   }
   
   Axis(int max, int min, float borderW, float borderH, float rectW)
@@ -98,7 +98,14 @@ class Axis
       rotate(-PI/2);
       fill(255);
       //Write the rotated text underneath the x axis ticks
-      text((xText.get(i)).substring(0,4), 0, 0);
+      if((xText.get(i)).length() > 3)
+      {
+        text((xText.get(i)).substring(0,4), 0, 0);
+      }
+      else
+      {
+        text((xText.get(i)).substring(0,3), 0, 0);
+      }
       
       //Pop the transformation matrix off the stack
       popMatrix();
@@ -117,5 +124,18 @@ class Axis
       line(width-borderW, (height-borderH)-(tickIncrement*i), borderW-tickW, (height-borderH)-(tickIncrement*i));
       text(int((numberInc*i)+min), borderW-textIntH, (height-borderH)-(tickIncrement*i));
     }//end for
+  }
+  
+  void drawSlopeAxis()
+  {
+    float x1 = map(width*0.25f, 0, width, borderW, borderW+graphW);
+    float x2 = map(width-(width*0.25f), 0, width, borderW, borderW+graphW);
+    textAlign(CENTER, CENTER);
+    textSize(11);
+    stroke(255);
+    line(x1, height-borderH, x1, (height-borderH) - graphH);
+    line(x2, height-borderH, x2, (height-borderH) - graphH);
+    text("2007", x1, borderH*0.5f);
+    text("2015", x2, borderH*0.5f);
   }
 }
