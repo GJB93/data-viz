@@ -8,6 +8,7 @@ class MarqueData
   //This ArrayList holds all the yearly registration numbers for the car marque
   ArrayList<Integer> regNums;
   ArrayList<String> years;
+  color c;
   
   
   //Constructors for the MarqueData class
@@ -35,6 +36,7 @@ class MarqueData
     total = calculateTotal(regNums);
     max = getMax(regNums);
     min = getMin(regNums);
+    this.c = color(random(127, 255), random(127, 255), random(127, 255));
   }
   
   //Method to calculate the total registration numbers

@@ -12,7 +12,6 @@ class Graph
   float graphW;
   float graphH;
   float rectWidth;
-  color c;
   color[] carray;
   String title;
   
@@ -35,14 +34,14 @@ class Graph
   
   //Constructor recieves the data, the value to map the data against, the maximum and minimum values for scaling the graph,
   //the border values for the graph and the colour to use for the trend lines
-  Graph(String title, ArrayList<Integer> data, ArrayList<String> names, int max, int min, float borderW, float borderH, color c)
+  Graph(String title, ArrayList<Integer> data, ArrayList<String> names, int max, int min, float borderW, float borderH, color[] carray)
   {
     this(title, data.size(), max, min, borderW, borderH);
     this.data = new ArrayList<Integer>();
     this.names = new ArrayList<String>();
     this.data.addAll(data);
     this.names.addAll(names);
-    this.c = c;
+    this.carray = carray;
   }
   
   Graph(String title, ArrayList<MarqueData> data, int max, int min, float borderW, float borderH, color[] carray)
@@ -61,7 +60,6 @@ class Graph
     textSize(12);
     text(title, width/2, borderH*0.5f);
     stroke(255);
-    fill(c);
     //For each element of data
     for(int i=0; i<data.size(); i++)
     {
@@ -69,6 +67,7 @@ class Graph
       float x = map(i, 0, data.size(), borderW, borderW+graphW);
       float y = map(data.get(i), min, max, height-borderH, (height-borderH) - graphH);
       
+      fill(carray[i]);
       //Draw the bar
       rect(x, y, rectWidth, (height-borderH)-y);
     }//end for 
@@ -94,7 +93,7 @@ class Graph
     rectWidth = graphW/ (float)(data.size()-1);
     
     //Set the colour for the line
-    stroke(c);
+    stroke(color(random(127, 255), random(127, 255), random(127, 255)));
     
     //For each data value
     for(int i=1; i<data.size(); i++)
@@ -154,8 +153,8 @@ class Graph
       float y1 = map(preRecessionAvg, min, max, height-borderH, (height-borderH) - graphH);
       float y2 = map(postRecessionAvg, min, max, height-borderH, (height-borderH) - graphH);
       
-      stroke(carray[(mData.size()-1)-i]);
-      fill(carray[(mData.size()-1)-i]);
+      stroke(carray[i]);
+      fill(carray[i]);
       text(mData.get(i).marqueName + " : " + preRecessionAvg, x1-tWidth, y1);
       text(mData.get(i).marqueName + " : " + postRecessionAvg, x2+tWidth, y2);
       

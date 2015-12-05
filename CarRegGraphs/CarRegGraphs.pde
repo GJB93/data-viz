@@ -4,7 +4,6 @@ Accordion accordion;
 
 //Declare an ArrayList to hold each array of integer values
 ArrayList<MarqueData> marqueData = new ArrayList<MarqueData>();
-
 ArrayList<Integer> yearlyTotals = new ArrayList<Integer>();
 ArrayList<Integer> totals2007 = new ArrayList<Integer>();
 ArrayList<Integer> totals2015 = new ArrayList<Integer>();
@@ -26,7 +25,8 @@ int topNumber = 10;
 
 
 color bgColor = color(50);
-color[] slopeColors = new color[topNumber];
+color[] marqueColors;
+color[] yearColors;
 int mode = 1;
 
 void setup()
@@ -36,14 +36,19 @@ void setup()
   borderH = height*0.1f;
   //Loading the data from the .csv file
   loadData();
-  
+  marqueColors = new color[marqueData.size()];
+  yearColors = new color[marqueData.get(0).regNums.size()];
   quicksort(marqueData, 0, marqueData.size()-1);
   
-  for(int i=0; i< topNumber; i++)
-  { //<>//
-    slopeColors[i] = color(random(127, 255), random(127, 255), random(127, 255));
+  for(int i=0; i< marqueColors.length; i++) //<>//
+  {
+    marqueColors[i] = marqueData.get(i).c;
   }
-  slopegraph = new Graph("Top 10 Marques", marqueData, slopeMax, slopeMin, borderW, borderH, slopeColors);
+  for(int i=0; i< yearColors.length; i++)
+  {
+    yearColors[i] = color(random(127, 255), random(127, 255), random(127, 255));
+  }
+  slopegraph = new Graph("Top 10 Marques", marqueData, slopeMax, slopeMin, borderW, borderH, marqueColors);
   
   createYearlyTotalGraph();
   createMarqueGraphs();
@@ -144,7 +149,6 @@ void createYearlyTotalGraph()
   int total;
   int minYearly = minInit;
   int maxYearly = maxInit;
-  color yearBarColour = color(random(127, 255), random(127, 255), random(127, 255));
   
   for(int i=0; i<marqueData.get(0).regNums.size(); i++)
   {
@@ -176,7 +180,7 @@ void createYearlyTotalGraph()
     
   }
   
-  yearTotalGraph = new Graph("Yearly Totals", yearlyTotals, marqueData.get(0).years, maxYearly, minYearly, borderW, borderH, yearBarColour);
+  yearTotalGraph = new Graph("Yearly Totals", yearlyTotals, marqueData.get(0).years, maxYearly, minYearly, borderW, borderH, yearColors);
   
   //Drawing every graph, to show how the trend lines compare to one another
   background(bgColor);
@@ -201,8 +205,7 @@ void createMarqueGraphs()
     {
       minTotal = marqueData.get(i).min;
     }
-    color marqueLineColours = color(random(127, 255), random(127, 255), random(127, 255));
-    marqueGraph.add(new Graph(marqueData.get(i).marqueName, marqueData.get(i).regNums, marqueData.get(0).years, maxTotal, minTotal, borderW, borderH, marqueLineColours));
+    marqueGraph.add(new Graph(marqueData.get(i).marqueName, marqueData.get(i).regNums, marqueData.get(0).years, maxTotal, minTotal, borderW, borderH, marqueColors));
   }
 }
 
@@ -233,7 +236,7 @@ void createTotalsGraph()
     marqueTotals.add(data.total);
   }
   
-  marqueTotalGraph = new Graph("Marque Totals", marqueTotals, marqueNames, maxTotal, minTotal, borderW, borderH, color(random(127, 255), random(127, 255), random(127, 255)));
+  marqueTotalGraph = new Graph("Marque Totals", marqueTotals, marqueNames, maxTotal, minTotal, borderW, borderH, marqueColors);
 }
 
 void quicksort(ArrayList<MarqueData> array, int low, int high)
