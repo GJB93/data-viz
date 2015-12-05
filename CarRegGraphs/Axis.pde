@@ -65,13 +65,6 @@ class Axis
     this.mData.addAll(data);
   }
   
-  void drawAxis()
-  {
-    drawAxisLines();
-    drawXTicks();
-    drawYTicks();
-  }
-  
   //Method to draw the vertical and horizontal axis lines
   void drawAxisLines()
   {
@@ -105,6 +98,37 @@ class Axis
       else
       {
         text((xText.get(i)).substring(0,3), 0, 0);
+      }
+      
+      //Pop the transformation matrix off the stack
+      popMatrix();
+    }//end for
+  }
+  
+  void drawBarXTicks()
+  {
+    textSize(10);
+    textAlign(LEFT, CENTER);
+    for(int i=0; i<xText.size(); i++)
+    {
+      //Draw the tick lines
+      line(borderW+(horizontalIncrement*i), (height-borderH)+tickW, borderW+(horizontalIncrement*i), height-borderH);
+      
+      //Push the current transformation matrix to the stack (i.e, drawing from 0,0)
+      pushMatrix();
+      //Translate the origin to the point to write the text for the x axis
+      translate(borderW+(i*horizontalIncrement), (height-borderH)+textIntW);
+      //Rotate the text 90 degrees
+      rotate(-PI/2);
+      fill(255);
+      //Write the rotated text underneath the x axis ticks
+      if((xText.get(i)).length() > 3)
+      {
+        text((xText.get(i)).substring(0,4), 0, horizontalIncrement*0.5);
+      }
+      else
+      {
+        text((xText.get(i)).substring(0,3), 0, horizontalIncrement*0.5);
       }
       
       //Pop the transformation matrix off the stack

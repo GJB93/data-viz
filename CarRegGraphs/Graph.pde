@@ -12,6 +12,7 @@ class Graph
   float graphW;
   float graphH;
   float rectWidth;
+  color c;
   color[] carray;
   String title;
   
@@ -30,6 +31,16 @@ class Graph
     graphW = width - (borderW*2.0f);
     graphH = height - (borderH*2.0f);
     rectWidth = graphW/ (float) (dataSize);
+  }
+  
+  Graph(String title, ArrayList<Integer> data, ArrayList<String> names, int max, int min, float borderW, float borderH, color c)
+  {
+    this(title, data.size(), max, min, borderW, borderH);
+    this.data = new ArrayList<Integer>();
+    this.names = new ArrayList<String>();
+    this.data.addAll(data);
+    this.names.addAll(names);
+    this.c = c;
   }
   
   //Constructor recieves the data, the value to map the data against, the maximum and minimum values for scaling the graph,
@@ -78,7 +89,7 @@ class Graph
     
     //Draw the axis for the bar chart
     axis.drawAxisLines();
-    axis.drawXTicks();
+    axis.drawBarXTicks();
     axis.drawYTicks();
     
   }
@@ -93,7 +104,7 @@ class Graph
     rectWidth = graphW/ (float)(data.size()-1);
     
     //Set the colour for the line
-    stroke(color(random(127, 255), random(127, 255), random(127, 255)));
+    stroke(c);
     
     //For each data value
     for(int i=1; i<data.size(); i++)

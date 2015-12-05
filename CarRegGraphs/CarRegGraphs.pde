@@ -1,15 +1,18 @@
 import controlP5.*;
 ControlP5 cp5;
 Accordion accordion;
+DropdownList d1;
 
 //Declare an ArrayList to hold each array of integer values
 ArrayList<MarqueData> marqueData = new ArrayList<MarqueData>();
+ArrayList<MarqueData> sortedData = new ArrayList<MarqueData>();
 ArrayList<Integer> yearlyTotals = new ArrayList<Integer>();
 ArrayList<Integer> totals2007 = new ArrayList<Integer>();
 ArrayList<Integer> totals2015 = new ArrayList<Integer>();
 ArrayList<Graph> marqueGraph;
 Graph yearTotalGraph;
 Graph marqueTotalGraph;
+Graph sortedTotalGraph;
 Graph slopegraph;
 Axis axis;
 
@@ -26,8 +29,10 @@ int topNumber = 10;
 
 color bgColor = color(50);
 color[] marqueColors;
+color[] sortedColors;
 color[] yearColors;
 int mode = 1;
+int marqueInd = 0;
 
 void setup()
 {
@@ -35,20 +40,23 @@ void setup()
   borderW = width*0.1f;
   borderH = height*0.1f;
   //Loading the data from the .csv file
-  loadData();
+  loadData(); //<>//
   marqueColors = new color[marqueData.size()];
+  sortedColors = new color[marqueData.size()];
   yearColors = new color[marqueData.get(0).regNums.size()];
-  quicksort(marqueData, 0, marqueData.size()-1);
+  sortedData.addAll(marqueData);
+  quicksort(sortedData, 0, marqueData.size()-1);
   
-  for(int i=0; i< marqueColors.length; i++) //<>//
+  for(int i=0; i< marqueColors.length; i++)
   {
     marqueColors[i] = marqueData.get(i).c;
+    sortedColors[i] = sortedData.get(i).c;
   }
   for(int i=0; i< yearColors.length; i++)
   {
     yearColors[i] = color(random(127, 255), random(127, 255), random(127, 255));
   }
-  slopegraph = new Graph("Top 10 Marques", marqueData, slopeMax, slopeMin, borderW, borderH, marqueColors);
+  slopegraph = new Graph("Top 10 Marques", sortedData, slopeMax, slopeMin, borderW, borderH, sortedColors);
   
   createYearlyTotalGraph();
   createMarqueGraphs();
@@ -63,19 +71,37 @@ void draw()
   {
     case 0:
     {
+      d1.hide();
       marqueTotalGraph.drawBarChart();
       break;
     }
     
     case 1:
     {
-      slopegraph.drawSlopeGraph();
+      d1.hide();
+      sortedTotalGraph.drawBarChart();
       break;
     }
     
     case 2:
     {
+      d1.hide();
+      slopegraph.drawSlopeGraph();
+      break;
+    }
+    
+    case 3:
+    {
+      d1.hide();
       yearTotalGraph.drawBarChart();
+      break;
+    }
+    
+    case 4:
+    {
+      d1.show();
+      marqueInd = int(d1.getValue());
+      marqueGraph.get(marqueInd).drawTrendLine();
       break;
     }
   }
@@ -91,14 +117,30 @@ void gui()
     .setItemWidth(20)
     .setItemHeight(20)
     .addItem("Marque Totals", 0)
-    .addItem("Top 10 Marques", 1)
-    .addItem("Yearly Totals", 2)
+    .addItem("Sorted Totals", 1)
+    .addItem("Top 10 Marques", 2)
+    .addItem("Yearly Totals", 3)
+    .addItem("Single Marque Yearly Totals", 4)
     .setColorLabel(color(255))
     .activate(1)
     .moveTo(g1)
     ;
+    
+  d1 = cp5.addDropdownList("Pick which marque data to show")
+    .setPosition(width-160, 20)
+    .setWidth(150)
+    .setItemHeight(10)
+    .setBackgroundColor(color(bgColor, 50))
+    .close()
+    .hide()
+    ;
+  
+  for(int i=0; i< marqueData.size(); i++)
+  {
+    d1.addItem(marqueData.get(i).marqueName, i);
+  }
   accordion = cp5.addAccordion("acc")
-                  .setPosition(width-(width*0.25f), borderH*0.5f)
+                  .setPosition(10, 20)
                   .setWidth(200)
                   .addItem(g1)
                   ;
@@ -125,6 +167,24 @@ void radio(int theC)
     case 2:
     {
       mode = 2;
+      break;
+    }
+    
+    case 3:
+    {
+      mode = 3;
+      break;
+    }
+    
+    case 4:
+    {
+      mode = 4;
+      break;
+    }
+    
+    default:
+    {
+      mode = 1;
       break;
     }
   }
@@ -177,7 +237,6 @@ void createYearlyTotalGraph()
     {
       minYearly = yearlyTotals.get(i);
     }
-    
   }
   
   yearTotalGraph = new Graph("Yearly Totals", yearlyTotals, marqueData.get(0).years, maxYearly, minYearly, borderW, borderH, yearColors);
@@ -205,7 +264,7 @@ void createMarqueGraphs()
     {
       minTotal = marqueData.get(i).min;
     }
-    marqueGraph.add(new Graph(marqueData.get(i).marqueName, marqueData.get(i).regNums, marqueData.get(0).years, maxTotal, minTotal, borderW, borderH, marqueColors));
+    marqueGraph.add(new Graph(marqueData.get(i).marqueName, marqueData.get(i).regNums, marqueData.get(0).years, maxTotal, minTotal, borderW, borderH, marqueData.get(i).c));
   }
 }
 
@@ -213,6 +272,8 @@ void createTotalsGraph()
 {
   ArrayList<String> marqueNames = new ArrayList<String>();
   ArrayList<Integer> marqueTotals = new ArrayList<Integer>();
+  ArrayList<String> sortedNames = new ArrayList<String>();
+  ArrayList<Integer> sortedTotals = new ArrayList<Integer>();
   int maxTotal = maxInit;
   int minTotal = minInit;
   //Finding the maximum and minimum total values across all marques, as well as
@@ -236,7 +297,14 @@ void createTotalsGraph()
     marqueTotals.add(data.total);
   }
   
-  marqueTotalGraph = new Graph("Marque Totals", marqueTotals, marqueNames, maxTotal, minTotal, borderW, borderH, marqueColors);
+  for(MarqueData data: sortedData)
+  {
+    sortedNames.add(data.marqueName);
+    sortedTotals.add(data.total);
+  }
+  
+  marqueTotalGraph = new Graph("Alphabetical Marque Totals", marqueTotals, marqueNames, maxTotal, minTotal, borderW, borderH, marqueColors);
+  sortedTotalGraph = new Graph("Sorted Marque Totals", sortedTotals, sortedNames, maxTotal, minTotal, borderW, borderH, sortedColors);
 }
 
 void quicksort(ArrayList<MarqueData> array, int low, int high)
