@@ -13,14 +13,15 @@ class Graph
   float graphH;
   float rectWidth;
   color c;
+  color[] carray;
   String title;
   
   Graph()
   {
-    this("", 0, 0, 0, 0, 0, color(0));
+    this("", 0, 0, 0, 0, 0);
   }
   
-  Graph(String title, int dataSize, int max, int min, float borderW, float borderH, color c)
+  Graph(String title, int dataSize, int max, int min, float borderW, float borderH)
   {
     this.title = title;
     this.borderW = borderW; 
@@ -30,25 +31,26 @@ class Graph
     graphW = width - (borderW*2.0f);
     graphH = height - (borderH*2.0f);
     rectWidth = graphW/ (float) (dataSize);
-    this.c = c;
   }
   
   //Constructor recieves the data, the value to map the data against, the maximum and minimum values for scaling the graph,
   //the border values for the graph and the colour to use for the trend lines
   Graph(String title, ArrayList<Integer> data, ArrayList<String> names, int max, int min, float borderW, float borderH, color c)
   {
-    this(title, data.size(), max, min, borderW, borderH, c);
+    this(title, data.size(), max, min, borderW, borderH);
     this.data = new ArrayList<Integer>();
     this.names = new ArrayList<String>();
     this.data.addAll(data);
     this.names.addAll(names);
+    this.c = c;
   }
   
-  Graph(String title, ArrayList<MarqueData> data, int max, int min, float borderW, float borderH, color c)
+  Graph(String title, ArrayList<MarqueData> data, int max, int min, float borderW, float borderH, color[] carray)
   {
-    this(title, data.size(), max, min, borderW, borderH, c);
+    this(title, data.size(), max, min, borderW, borderH);
     this.mData = new ArrayList<MarqueData>();
     this.mData.addAll(data);
+    this.carray = carray;
   }
   
   //Method to draw a bar chart using the data input
@@ -126,9 +128,13 @@ class Graph
     float x2 = map(width-(width*0.25f), 0, width, borderW, borderW+graphW);
     float tWidth = 50;
     axis = new Axis();
-    
+
     axis.drawSlopeAxis();
     
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(12);
+    text(title, width/2, borderH*0.5f);
     textSize(8);
     for(int i=mData.size()-1; i>mData.size()-11; i--)
     {
@@ -148,11 +154,9 @@ class Graph
       float y1 = map(preRecessionAvg, min, max, height-borderH, (height-borderH) - graphH);
       float y2 = map(postRecessionAvg, min, max, height-borderH, (height-borderH) - graphH);
       
-      this.c = color(random(127, 255), random(127, 255), random(127, 255));
-      stroke(c);
-      fill(c);
+      stroke(carray[(mData.size()-1)-i]);
+      fill(carray[(mData.size()-1)-i]);
       text(mData.get(i).marqueName + " : " + preRecessionAvg, x1-tWidth, y1);
-     
       text(mData.get(i).marqueName + " : " + postRecessionAvg, x2+tWidth, y2);
       
       line(x1, y1, x2, y2);

@@ -1,5 +1,6 @@
 import controlP5.*;
 ControlP5 cp5;
+Accordion accordion;
 
 //Declare an ArrayList to hold each array of integer values
 ArrayList<MarqueData> marqueData = new ArrayList<MarqueData>();
@@ -10,6 +11,7 @@ ArrayList<Integer> totals2015 = new ArrayList<Integer>();
 ArrayList<Graph> marqueGraph;
 Graph yearTotalGraph;
 Graph marqueTotalGraph;
+Graph slopegraph;
 Axis axis;
 
 float borderW;
@@ -20,37 +22,108 @@ int maxInit=Integer.MIN_VALUE;
 int minInit=Integer.MAX_VALUE;
 int slopeMin = 3000;
 int slopeMax = 25000;
+int topNumber = 10;
 
 
 color bgColor = color(50);
+color[] slopeColors = new color[topNumber];
+int mode = 1;
 
 void setup()
 {
   size(900, 900);
   borderW = width*0.1f;
   borderH = height*0.1f;
-  
   //Loading the data from the .csv file
   loadData();
   
   quicksort(marqueData, 0, marqueData.size()-1);
   
-  //Graph slope = new Graph(marqueData, slopeMax, slopeMin, borderW, borderH, color(0));
-  //background(bgColor);
-  //slope.drawSlopeGraph();
-  //createYearlyTotalGraph();
+  for(int i=0; i< topNumber; i++)
+  { //<>//
+    slopeColors[i] = color(random(127, 255), random(127, 255), random(127, 255));
+  }
+  slopegraph = new Graph("Top 10 Marques", marqueData, slopeMax, slopeMin, borderW, borderH, slopeColors);
   
-  createMarqueGraphs(); //<>//
+  createYearlyTotalGraph();
+  createMarqueGraphs();
   createTotalsGraph();
-  background(bgColor);
-  //marqueGraph.get(marqueData.size()-2).drawTrendLine();
-  marqueTotalGraph.drawBarChart();
+  gui();
 }//end setup()
 
 void draw()
 {
-  
+  background(bgColor);
+  switch(mode)
+  {
+    case 0:
+    {
+      marqueTotalGraph.drawBarChart();
+      break;
+    }
+    
+    case 1:
+    {
+      slopegraph.drawSlopeGraph();
+      break;
+    }
+    
+    case 2:
+    {
+      yearTotalGraph.drawBarChart();
+      break;
+    }
+  }
 }//end draw()
+
+void gui()
+{
+  cp5 = new ControlP5(this);
+  
+  Group g1 = cp5.addGroup("Choose Graph").setBackgroundColor(color(bgColor, 50)).setBackgroundHeight(150);
+  cp5.addRadioButton("radio")
+    .setPosition(10, 20)
+    .setItemWidth(20)
+    .setItemHeight(20)
+    .addItem("Marque Totals", 0)
+    .addItem("Top 10 Marques", 1)
+    .addItem("Yearly Totals", 2)
+    .setColorLabel(color(255))
+    .activate(1)
+    .moveTo(g1)
+    ;
+  accordion = cp5.addAccordion("acc")
+                  .setPosition(width-(width*0.25f), borderH*0.5f)
+                  .setWidth(200)
+                  .addItem(g1)
+                  ;
+  accordion.setCollapseMode(Accordion.MULTI);
+  accordion.open(0);
+}
+
+void radio(int theC)
+{
+  switch(theC)
+  {
+    case 0:
+    {
+      mode = 0;
+      break;
+    }
+    
+    case 1:
+    {
+      mode = 1;
+      break;
+    }
+    
+    case 2:
+    {
+      mode = 2;
+      break;
+    }
+  }
+}
 
 //Method to read the data from the file and place it into the MarqueData ArrayList
 void loadData()
