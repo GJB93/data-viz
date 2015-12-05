@@ -3,6 +3,7 @@ class Axis
   //Creating fields necessary for creating the axis of a graph
   ArrayList<Integer> yText;
   ArrayList<String> xText;
+  ArrayList<MarqueData> mData;
   int max;
   int min;
   float borderW; 
@@ -20,20 +21,11 @@ class Axis
   
   Axis()
   {
-    this(new ArrayList<Integer>(), new ArrayList<String>(), 0, 0, 0, 0, 0);
+    this(0, 0, 0, 0, 0);
   }
   
-  //Constructor for the Axis class
-  Axis(ArrayList<Integer> yText, ArrayList<String> xText, int max, int min, float borderW, float borderH, float rectW)
+  Axis(int max, int min, float borderW, float borderH, float rectW)
   {
-    //Initialise the yText and xText ArrayLists
-    this.yText = new ArrayList<Integer>();
-    this.xText = new ArrayList<String>();
-    
-    //Copy the data entered to the constructor into the class' ArrayLists
-    this.yText.addAll(yText);
-    this.xText.addAll(xText);
-    
     //Set the max and min values
     this.max = max;
     this.min = min;
@@ -51,6 +43,26 @@ class Axis
     dataRange = max-min;
     numberInc = max/ verticalIncrement;
     tickIncrement = graphH/ verticalIncrement;
+  }
+  
+  //Constructor for the Axis class
+  Axis(ArrayList<Integer> yText, ArrayList<String> xText, int max, int min, float borderW, float borderH, float rectW)
+  {
+    this(max, min, borderW, borderH, rectW);
+    //Initialise the yText and xText ArrayLists
+    this.yText = new ArrayList<Integer>();
+    this.xText = new ArrayList<String>();
+    
+    //Copy the data entered to the constructor into the class' ArrayLists
+    this.yText.addAll(yText);
+    this.xText.addAll(xText);
+  }
+  
+  Axis(ArrayList<MarqueData> data, int max, int min, float borderW, float borderH, float rectW)
+  {
+    this(max, min, borderW, borderH, rectW);
+    this.mData = new ArrayList<MarqueData>();
+    this.mData.addAll(data);
   }
   
   void drawAxis()

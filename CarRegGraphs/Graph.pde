@@ -1,7 +1,7 @@
 class Graph
 {
   //Creating fields needed for drawing a graph
-  //Axis axis;
+  Axis axis;
   ArrayList<Integer> data;
   ArrayList<String> names;
   ArrayList<MarqueData> mData;
@@ -19,36 +19,34 @@ class Graph
     this(new ArrayList<Integer>(), new ArrayList<String>(), 0, 0, 0, 0, 0);
   }
   
+  Graph(int dataSize, int max, int min, float borderW, float borderH, color c)
+  {
+    this.borderW = borderW; 
+    this.borderH = borderH;
+    this.max = max;
+    this.min = min;
+    graphW = width - (borderW*2.0f);
+    graphH = height - (borderH*2.0f);
+    rectWidth = graphW/ (float) (dataSize);
+    this.c = c;
+  }
+  
   //Constructor recieves the data, the value to map the data against, the maximum and minimum values for scaling the graph,
   //the border values for the graph and the colour to use for the trend lines
   Graph(ArrayList<Integer> data, ArrayList<String> names, int max, int min, float borderW, float borderH, color c)
   {
+    this(data.size(), max, min, borderW, borderH, c);
     this.data = new ArrayList<Integer>();
     this.names = new ArrayList<String>();
     this.data.addAll(data);
     this.names.addAll(names);
-    this.borderW = borderW; 
-    this.borderH = borderH;
-    this.max = max;
-    this.min = min;
-    graphW = width - (borderW*2.0f);
-    graphH = height - (borderH*2.0f);
-    rectWidth = graphW/ (float) (data.size());
-    this.c = c;
   }
   
   Graph(ArrayList<MarqueData> data, int max, int min, float borderW, float borderH, color c)
   {
+    this(data.size(), max, min, borderW, borderH, c);
     this.mData = new ArrayList<MarqueData>();
     this.mData.addAll(data);
-    this.borderW = borderW; 
-    this.borderH = borderH;
-    this.max = max;
-    this.min = min;
-    graphW = width - (borderW*2.0f);
-    graphH = height - (borderH*2.0f);
-    rectWidth = graphW/ (float) (data.size());
-    this.c = c;
   }
   
   //Method to draw a bar chart using the data input
@@ -67,7 +65,7 @@ class Graph
       rect(x, y, rectWidth, (height-borderH)-y);
     }//end for 
     
-    /*
+    
     //Create a new axis for the bar chart
     axis = new Axis(data, names, max, min, borderW, borderH, rectWidth);
     
@@ -75,7 +73,7 @@ class Graph
     axis.drawAxisLines();
     axis.drawXTicks();
     axis.drawYTicks();
-    */
+    
   }
   
   void drawTrendLine()
@@ -99,15 +97,15 @@ class Graph
       line(x1, y1, x2, y2);
     }//end for
     
-    /*
+    
     //Create a new axis for the trend line graph
-    axis = new Axis(data, names, max, min, borderW, borderH, rectWidth);
+    axis = new Axis(data, names, max, min, borderW, borderH, rectWidth-1);
     
     //Draw the axis for the trend line graph
     axis.drawAxisLines();
     axis.drawXTicks();
     axis.drawYTicks();
-    */
+    
   }
   
   void drawSlopeGraph()

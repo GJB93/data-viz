@@ -1,3 +1,6 @@
+import controlP5.*;
+ControlP5 cp5;
+
 //Declare an ArrayList to hold each array of integer values
 ArrayList<MarqueData> marqueData = new ArrayList<MarqueData>();
 ArrayList<String> topMarques2007 = new ArrayList<String>();
@@ -32,8 +35,8 @@ void setup()
   
   Graph slope = new Graph(marqueData, maxYearly, minYearly, borderW, borderH, color(random(255), random(255), random(255)));
   background(0);
-  slope.drawSlopeGraph();
-  //drawYearlyTotalGraph();
+  //slope.drawSlopeGraph();
+  drawYearlyTotalGraph();
   
   //drawMarqueGraphs(); //<>//
 }//end setup()
@@ -94,12 +97,12 @@ void drawYearlyTotalGraph()
   
   Graph yearTotalGraph = new Graph(yearlyTotals, marqueData.get(0).years, maxYearly, minYearly, borderW, borderH, yearBarColour);
   
-  axis = new Axis(yearlyTotals, marqueData.get(0).years, maxYearly, minYearly, borderW, borderH, (width - (borderW*2.0f))/(marqueData.get(0).regNums.size()));
+  //axis = new Axis(yearlyTotals, marqueData.get(0).years, maxYearly, minYearly, borderW, borderH, (width - (borderW*2.0f))/(marqueData.get(0).regNums.size()));
   
   //Drawing every graph, to show how the trend lines compare to one another
   background(0);
   yearTotalGraph.drawBarChart();
-  axis.drawAxis();
+  //axis.drawAxis();
 }
 
 void drawMarqueGraphs()
@@ -132,7 +135,7 @@ void drawMarqueGraphs()
     graph.add(new Graph(marqueData.get(i).regNums, marqueData.get(0).years, maxTotal, minTotal, borderW, borderH, marqueLineColours[i]));
   }
   
-  axis = new Axis(marqueData.get(0).regNums, marqueData.get(0).years, maxTotal, minTotal, borderW, borderH, (width - (borderW*2.0f))/(marqueData.get(0).regNums.size() -1)); 
+ // axis = new Axis(marqueData.get(0).regNums, marqueData.get(0).years, maxTotal, minTotal, borderW, borderH, (width - (borderW*2.0f))/(marqueData.get(0).regNums.size() -1)); 
   
   //Drawing every graph, to show how the trend lines compare to one another
   background(0);
@@ -141,7 +144,7 @@ void drawMarqueGraphs()
   {
     graph.get(i).drawTrendLine();
   }
-  axis.drawAxis();
+ // axis.drawAxis();
 }
 
 void quicksort(ArrayList<MarqueData> array, int low, int high)
