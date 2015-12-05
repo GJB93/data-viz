@@ -145,7 +145,7 @@ void gui()
                   .addItem(g1)
                   ;
   accordion.setCollapseMode(Accordion.MULTI);
-  accordion.open(0);
+  accordion.close(0);
 }
 
 void radio(int theC)

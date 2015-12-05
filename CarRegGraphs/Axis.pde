@@ -36,7 +36,7 @@ class Axis
     graphW = width - (borderW*2.0f);
     graphH = height - (borderH*2.0f);
     tickW = borderW*0.1;
-    textIntW = borderW*0.7;
+    textIntW = borderW*0.5;
     textIntH = borderH*0.2;
     verticalIncrement = 10;
     horizontalIncrement = rectW;
@@ -160,7 +160,7 @@ class Axis
     stroke(255);
     line(x1, height-borderH, x1, (height-borderH) - graphH);
     line(x2, height-borderH, x2, (height-borderH) - graphH);
-    text("2007", x1, borderH*0.5f);
-    text("2015", x2, borderH*0.5f);
+    text("06-08 Average Sold", x1, borderH*0.7f);
+    text("09-15 Average Sold", x2, borderH*0.7f);
   }
 }

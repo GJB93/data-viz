@@ -167,7 +167,14 @@ class Graph
       stroke(carray[i]);
       fill(carray[i]);
       text(mData.get(i).marqueName + " : " + preRecessionAvg, x1-tWidth, y1);
-      text(mData.get(i).marqueName + " : " + postRecessionAvg, x2+tWidth, y2);
+      if((mData.get(i).marqueName).equals("RENAULT"))
+      {
+        text(mData.get(i).marqueName + " : " + postRecessionAvg, x2+(tWidth*2.2f), y2);
+      }
+      else
+      {
+        text(mData.get(i).marqueName + " : " + postRecessionAvg, x2+tWidth, y2);
+      }
       
       line(x1, y1, x2, y2);
     }
