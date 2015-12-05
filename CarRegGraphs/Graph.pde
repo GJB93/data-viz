@@ -102,7 +102,6 @@ class Graph
     text(title, width/2, borderH*0.5f);
     //There is one less line than there is data values when drawing a trend line graph
     rectWidth = graphW/ (float)(data.size()-1);
-    println(rectWidth);
     //Set the colour for the line
     stroke(c);
     
