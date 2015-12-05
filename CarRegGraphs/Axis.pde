@@ -35,9 +35,9 @@ class Axis
     this.borderH = borderH;
     graphW = width - (borderW*2.0f);
     graphH = height - (borderH*2.0f);
-    tickW = borderW*0.1;
-    textIntW = borderW*0.5;
-    textIntH = borderH*0.2;
+    tickW = borderW*0.1f;
+    textIntW = borderW*0.5f;
+    textIntH = borderH*0.2f;
     verticalIncrement = 10;
     horizontalIncrement = rectW;
     dataRange = max-min;

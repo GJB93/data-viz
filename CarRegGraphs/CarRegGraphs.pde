@@ -3,19 +3,19 @@ ControlP5 cp5;
 Accordion accordion;
 DropdownList d1;
 
-//Declare an ArrayList to hold each array of integer values
+//Declare ArrayLists to hold all the data needed to create the graphs
 ArrayList<MarqueData> marqueData = new ArrayList<MarqueData>();
 ArrayList<MarqueData> sortedData = new ArrayList<MarqueData>();
 ArrayList<Integer> yearlyTotals = new ArrayList<Integer>();
-ArrayList<Integer> totals2007 = new ArrayList<Integer>();
-ArrayList<Integer> totals2015 = new ArrayList<Integer>();
+
+//Objects to hold every graph that is to be created
 ArrayList<Graph> marqueGraph;
 Graph yearTotalGraph;
 Graph marqueTotalGraph;
 Graph sortedTotalGraph;
 Graph slopegraph;
-Axis axis;
 
+//Border variables
 float borderW;
 float borderH;
 
@@ -24,51 +24,72 @@ int maxInit=Integer.MIN_VALUE;
 int minInit=Integer.MAX_VALUE;
 int slopeMin = 3000;
 int slopeMax = 25000;
-int topNumber = 10;
 
-
+//All colours that are to be used when drawing the graphs
 color bgColor = color(50);
 color[] marqueColors;
 color[] sortedColors;
 color[] yearColors;
+
+//Variables to control which graph to show
 int mode = 1;
 int marqueInd = 0;
 
 void setup()
 {
+  //Setting the size of the presentation and the border width and height
   size(900, 900);
   borderW = width*0.1f;
-  borderH = height*0.1f;
+  borderH = height*0.1f; //<>//
   //Loading the data from the .csv file
-  loadData(); //<>//
+  loadData();
+  
+  //Initialising arrays to hold the colors for each graph
   marqueColors = new color[marqueData.size()];
   sortedColors = new color[marqueData.size()];
   yearColors = new color[marqueData.get(0).regNums.size()];
+  
+  //Creating a copy of the data that will be sorted
   sortedData.addAll(marqueData);
+  
+  //Sorting the copied data using a quicksort algorithm
   quicksort(sortedData, 0, marqueData.size()-1);
   
+  //Setting the colours to be equal to the relevant colour for the Marque at index i in the ArrayList
   for(int i=0; i< marqueColors.length; i++)
   {
     marqueColors[i] = marqueData.get(i).c;
     sortedColors[i] = sortedData.get(i).c;
   }
+  
+  //Setting a random colour for each bar of the Yearly Totals bar chart
   for(int i=0; i< yearColors.length; i++)
   {
     yearColors[i] = color(random(127, 255), random(127, 255), random(127, 255));
   }
+  
+  //Creating a slopegraph using the top 10 marques in the sortedData ArrayList
   slopegraph = new Graph("Top 10 Marques", sortedData, slopeMax, slopeMin, borderW, borderH, sortedColors);
   
+  //Calling methods used to create the graphs needed for the visualisation
   createYearlyTotalGraph();
   createMarqueGraphs();
   createTotalsGraph();
+  
+  //Creating a ControlP5 control panel used to swap between the various graphs
   gui();
 }//end setup()
 
 void draw()
 {
+  //Refreshing the screen
   background(bgColor);
+  
+  //Using a switch statement to determine which graph to draw
   switch(mode)
   {
+    //Case 0 shows a barchart for each marque's total registrations between 2006 and 2015
+    //The graph is sorted in alphabetical order relating to the marque name
     case 0:
     {
       d1.hide();
@@ -76,6 +97,8 @@ void draw()
       break;
     }
     
+    //Case 1 shows a barchart for each marque's total registrations between 2006 and 2015
+    //The graph is sorted in ascending order relating to the total registrations
     case 1:
     {
       d1.hide();
@@ -83,6 +106,8 @@ void draw()
       break;
     }
     
+    //Case 2 shows a slopegraph that displays the average values sold by the
+    //top 10 marques before and after the recession
     case 2:
     {
       d1.hide();
@@ -90,6 +115,8 @@ void draw()
       break;
     }
     
+    //Case 3 shows a barchart showing the total number of registered cars
+    //overall for each year between 2006 and 2015
     case 3:
     {
       d1.hide();
@@ -97,8 +124,11 @@ void draw()
       break;
     }
     
+    //Case 4 allows the user to show a trendline for the total number of registered cars for
+    //each marque between 2006 and 2015. 
     case 4:
     {
+      //A dropdown list is shown to allow the user to choose which marque's data to show
       d1.show();
       marqueInd = int(d1.getValue());
       marqueGraph.get(marqueInd).drawTrendLine();
