@@ -114,6 +114,7 @@ class Graph
       float y2 = map(data.get(i), min, max, height-borderH, borderH);
       
       stroke(c);
+      
       //Draw the line from the element before to the current element
       line(x1, y1, x2, y2);
     }//end for

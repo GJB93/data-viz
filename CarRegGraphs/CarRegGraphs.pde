@@ -139,11 +139,26 @@ void draw()
   }
 }//end draw()
 
+
+/*
+  This method is used to create the ControlP5 menu that is used to
+  switch between the different graphs
+*/
 void gui()
 {
+  //Creating a new ControlP5 object
   cp5 = new ControlP5(this);
   
+  /*
+    Creating an accordion group that will hold radio buttons
+    to allow the user to switch between the different groups
+    of graphs
+  */
   Group g1 = cp5.addGroup("Choose Graph").setBackgroundColor(color(255, 50)).setBackgroundHeight(150);
+  
+  /*
+    Creating the radio buttons for switching graphs
+  */
   cp5.addRadioButton("radio")
     .setPosition(10, 20)
     .setItemWidth(20)
@@ -157,7 +172,11 @@ void gui()
     .activate(1)
     .moveTo(g1)
     ;
-    
+  
+  /*
+    Creating a dropdown list to allow the user to choose
+    which car marque's yearly data to show
+  */
   d1 = cp5.addDropdownList("Pick which marque data to show")
     .setPosition(width-160, 20)
     .setWidth(150)
@@ -167,21 +186,40 @@ void gui()
     .hide()
     ;
   
+  /*
+    Adding each marque name to the dropdown list
+    and giving them a value equal to that of their
+    position in the ArrayList
+  */
   for(int i=0; i< marqueData.size(); i++)
   {
     d1.addItem(marqueData.get(i).marqueName, i);
   }
+  /*
+    Creating an accordion that holds the menu options
+  */
   accordion = cp5.addAccordion("acc")
                   .setPosition(10, 20)
                   .setWidth(200)
                   .addItem(g1)
                   ;
+  //Allowing multiple accordion groups to be open
   accordion.setCollapseMode(Accordion.MULTI);
+  //Setting the accordion to be open by default
   accordion.open(0);
 }
 
+/*
+  The radio method controls what happens when
+  each radio button is pressed
+*/
 void radio(int theC)
 {
+  /*
+    The switch statement controls which mode the
+    program enters depending on the radio button
+    chosen
+  */
   switch(theC)
   {
     case 0:
@@ -213,12 +251,6 @@ void radio(int theC)
       mode = 4;
       break;
     }
-    
-    default:
-    {
-      mode = 1;
-      break;
-    }
   }
 }
 
@@ -229,27 +261,42 @@ void loadData()
   String filename = "carData20022015.csv";
   //Load a String array with each line of the dataset file
   String[] lines = loadStrings(filename);
+  
+  //For each line in the file
   for(String s:lines)
   {
+    //Create a new MarqueData object using the line of data
     MarqueData marque = new MarqueData(s);
+    //Add the object to the ArrayList
     marqueData.add(marque);
   }//end foreach
 }//end loadData()
 
+/*
+  This method creates the graphs that show the total number
+  of cars registered for each year between 2002 and 2015
+*/
 void createYearlyTotalGraph()
 {
-  int total;
+  //Initialising the max and min variables
   int minYearly = minInit;
   int maxYearly = maxInit;
   
+  //Initialising the yearlyTotals ArrayList with default
+  //values
   for(int i=0; i<marqueData.get(0).regNums.size(); i++)
   {
       yearlyTotals.add(0);
   }
   
+  /*
+    This nested loop adds each marque's yearly data
+    to a position correlating to that year in the
+    yearlyTotals ArrayList
+  */
   for(int i=0; i<marqueData.size(); i++)
   {
-    total = 0;
+    int total = 0;
     for(int j=0; j<marqueData.get(i).regNums.size(); j++)
     {
       total = yearlyTotals.get(j);
@@ -258,6 +305,10 @@ void createYearlyTotalGraph()
     } 
   }
   
+  /*
+    Getting the max and min values in the ArrayList that
+    will be used to scale the graph correctly
+  */
   for(int i=0; i<yearlyTotals.size(); i++)
   {
     if(yearlyTotals.get(i) > maxYearly)
@@ -271,22 +322,23 @@ void createYearlyTotalGraph()
     }
   }
   
+  //Calling one of the constructors in the Graph class
   yearTotalGraph = new Graph("Yearly Totals", yearlyTotals, marqueData.get(0).years, maxYearly, minYearly, borderW, borderH, yearColors);
-  
-  //Drawing every graph, to show how the trend lines compare to one another
-  background(bgColor);
-  yearTotalGraph.drawBarChart();
 }
 
 void createMarqueGraphs()
 {
   marqueGraph = new ArrayList<Graph>();
-  //Finding the maximum and minimum total values across all marques, as well as
-  //setting the colour for each trend line
+  /*
+    This for loop creates a graph for every marque that
+    will show the trend in registration numbers between
+    2002 and 2015 for that marque
+  */
   for(int i=0; i<marqueData.size(); i++)
   {
     int maxTotal = maxInit;
     int minTotal = minInit;
+    //Max and min values for graph scaling
     if(marqueData.get(i).max > maxTotal)
     {
       maxTotal = marqueData.get(i).max;
@@ -296,20 +348,27 @@ void createMarqueGraphs()
     {
       minTotal = marqueData.get(i).min;
     }
+    //Adding the created graph to the ArrayList of graphs
     marqueGraph.add(new Graph(marqueData.get(i).marqueName, marqueData.get(i).regNums, marqueData.get(0).years, maxTotal, minTotal, borderW, borderH, marqueData.get(i).c));
   }
 }
 
+/*
+  This method creates a graph showing all the total registration
+  numbers for every marque for the years 2002 to 2015. It creates
+  both an alphabetical graph and a graph sorted by each total value
+*/
 void createTotalsGraph()
 {
+  //Creating ArrayLists to allow the graphs to be created properly
   ArrayList<String> marqueNames = new ArrayList<String>();
   ArrayList<Integer> marqueTotals = new ArrayList<Integer>();
   ArrayList<String> sortedNames = new ArrayList<String>();
   ArrayList<Integer> sortedTotals = new ArrayList<Integer>();
   int maxTotal = maxInit;
   int minTotal = minInit;
-  //Finding the maximum and minimum total values across all marques, as well as
-  //setting the colour for each trend line
+  
+  //Finding the maximum and minimum total values across all marques
   for(int i=0; i<marqueData.size(); i++)
   {
     if(marqueData.get(i).total > maxTotal)
@@ -323,6 +382,8 @@ void createTotalsGraph()
     }
   }
   
+  //Filling the ArrayLists with the data from the two differently
+  //sorted ArrayLists
   for(MarqueData data: marqueData)
   {
     marqueNames.add(data.marqueName);
@@ -335,51 +396,118 @@ void createTotalsGraph()
     sortedTotals.add(data.total);
   }
   
+  //Creating the sorted and alphabetical graphs
   marqueTotalGraph = new Graph("Alphabetical Marque Totals", marqueTotals, marqueNames, maxTotal, minTotal, borderW, borderH, marqueColors);
   sortedTotalGraph = new Graph("Sorted Marque Totals", sortedTotals, sortedNames, maxTotal, minTotal, borderW, borderH, sortedColors);
 }
 
-void quicksort(ArrayList<MarqueData> array, int low, int high)
+/*
+  Quicksort is a divide-and-conquer style algorithm. It works using
+  recursion.
+  
+  It starts by setting an index variable equal to the value returned
+  by the partition method. The explanation for the partition method 
+  is below.
+*/
+void quicksort(ArrayList<MarqueData> data, int left, int right)
 {
-  int index = partition(array, low, high);
-  if(low < index-1)
+  //Using the partition method to find which index to use when
+  //dividing the elements of the ArrayList
+  int index = partition(data, left, right);
+ 
+  if(left < index-1)
   {
-    quicksort(array, low, index-1);
+    //This recursive call uses the the position one
+    //less than that of the partition index as the
+    //right position of the divided ArrayList
+    quicksort(data, left, index-1);
   }
-  if(index < high)
+  
+  
+  if(index < right)
   {
-    quicksort(array, index, high);
+    //This recursive call uses the partition index as
+    //the left postition of the divided ArrayList
+    quicksort(data, index, right);
   }
 }
 
-int partition(ArrayList<MarqueData> array, int low, int high)
-{
-  int i = low;
-  int j = high;
-  MarqueData temp;
-  int pivot = array.get((low+high)/2).total;
+/*
+  The partition method works using a pivot value. This pivot value is set
+  as the value of the 'total' field of the MarqueData object found halfway 
+  between the given left and right indexes.
   
+  The method loops while the left index is less than the right index.
+  
+  The first stage of the loop checks if the 'total' value found at the left
+  index position is less than the pivot value. If it is less than the pivot
+  value, the position of the left index is incremented one place to the right.
+  Once the value is greater than the pivot value, the loop continues.
+  
+  The second stage of the loop is similar to the first, except the right value
+  is decremented on place to the left if the value is greater than the pivot.
+  
+  The third stage of the loop checks if the left index is less than or equal to
+  that of the right index. If it is, then a swap is performed between the object
+  found at the left index and the object found at the right index. The position of
+  the left and right indexes are incremented and decremented respectively.
+  
+  Once the left index is greater than the right index, the method stops looping,
+  and returns the current value of the left index.
+*/
+
+int partition(ArrayList<MarqueData> data, int left, int right)
+{
+  //Setting two index variables equal to the position 
+  //of the left and right values of the array
+  int i = left;
+  int j = right;
+  
+  //Creating an temporary object used for swapping positions
+  //in the ArrayList
+  MarqueData temp;
+  
+  //The pivot is the total value found at the index that
+  //is halfway between the left and right indexes
+  int pivot = data.get((left+right)/2).total;
+  
+  //While the left index variable is less than or equal
+  //to the value of the right index variable
   while(i <= j)
   {
-    while(array.get(i).total < pivot)
+    //While the total value at index i is less than the
+    //total value at the pivot index
+    while(data.get(i).total < pivot)
     {
+      //Increment the position of the left index
       i++;
     }
     
-    while(array.get(j).total > pivot)
+    //While the total value at index j is greater than the
+    //value at the pivot index
+    while(data.get(j).total > pivot)
     {
+      //Decrement the position of the roght index
       j--;
     }
     
+    //If the left index is less than the right index
     if(i <= j)
     {
-      temp = array.get(i);
-      array.set(i, array.get(j));
-      array.set(j, temp);
+      //Set the temporary object equal to the object found
+      //at index i
+      temp = data.get(i);
+      //Set the i-th object to be equal to the j-th object
+      data.set(i, data.get(j));
+      //Set the j-th object to be equal to the i-th object
+      data.set(j, temp);
+      //Increment the position of the left index
       i++;
+      //Decrement the position of the right index
       j--;
     }
   }
   
+  //Return the position of the left index
   return i;
 }
