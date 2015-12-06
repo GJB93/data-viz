@@ -131,8 +131,7 @@ class Graph
   
   void drawSlopeGraph()
   {
-    int numYearsPre = 3;
-    int numYearsPost = 7;
+    int numYears = 7;
     float x1 = map(width*0.25f, 0, width, borderW, borderW+graphW);
     float x2 = map(width-(width*0.25f), 0, width, borderW, borderW+graphW);
     float tWidth = 50;
@@ -149,16 +148,16 @@ class Graph
     {
       int preRecessionTotal = 0;
       int postRecessionTotal = 0;
-      for(int j=0; j<3; j++)
+      for(int j=0; j<numYears; j++)
       {
         preRecessionTotal += mData.get(i).regNums.get(j);
       }
-      int preRecessionAvg = preRecessionTotal/numYearsPre;
-      for(int j=numYearsPre; j<mData.get(0).regNums.size(); j++)
+      int preRecessionAvg = preRecessionTotal/numYears;
+      for(int j=numYears; j<mData.get(0).regNums.size(); j++)
       {
         postRecessionTotal += mData.get(i).regNums.get(j);
       }
-      int postRecessionAvg = postRecessionTotal/numYearsPost;
+      int postRecessionAvg = postRecessionTotal/numYears;
       
       float y1 = map(preRecessionAvg, min, max, height-borderH, borderH);
       float y2 = map(postRecessionAvg, min, max, height-borderH, borderH);

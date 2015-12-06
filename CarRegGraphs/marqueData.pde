@@ -29,13 +29,13 @@ class MarqueData
     this.years = new ArrayList<String>();
     for(int i=0; i<regNums.size();i++)
     {
-      if((i+6)<10)
+      if((i+2)<10)
       {
-        years.add("200" + (i+6));
+        years.add("200" + (i+2));
       }
       else
       {
-        years.add("20" + (i+6));
+        years.add("20" + (i+2));
       }
     }
     total = calculateTotal(regNums);

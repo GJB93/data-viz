@@ -160,7 +160,7 @@ class Axis
     stroke(255);
     line(x1, height-borderH, x1, (height-borderH) - graphH);
     line(x2, height-borderH, x2, (height-borderH) - graphH);
-    text("06-08 Average Sold", x1, borderH*0.7f);
+    text("02-08 Average Sold", x1, borderH*0.7f);
     text("09-15 Average Sold", x2, borderH*0.7f);
   }
 }

@@ -22,8 +22,8 @@ float borderH;
 //Initialising values for finding the max and min total values
 int maxInit=Integer.MIN_VALUE;
 int minInit=Integer.MAX_VALUE;
-int slopeMin = 3000;
-int slopeMax = 25000;
+int slopeMin = 2300;
+int slopeMax = 23000;
 
 //All colours that are to be used when drawing the graphs
 color bgColor = color(50);
@@ -226,7 +226,7 @@ void radio(int theC)
 void loadData()
 {
   //Initialising a string with the name of the dataset file
-  String filename = "carData20062015.csv";
+  String filename = "carData20022015.csv";
   //Load a String array with each line of the dataset file
   String[] lines = loadStrings(filename);
   for(String s:lines)
