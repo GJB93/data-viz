@@ -76,7 +76,7 @@ class Graph
     {
       //Use the map method to determine the scale of the bar relevant to the graph width and height
       float x = map(i, 0, data.size(), borderW, borderW+graphW);
-      float y = map(data.get(i), min, max, height-borderH, (height-borderH) - graphH);
+      float y = map(data.get(i), min, max, height-borderH, borderH);
       
       fill(carray[i]);
       //Draw the bar
@@ -109,29 +109,13 @@ class Graph
     {
       //Use the map method to determine the scale of the line relevant to the graph width and height
       float x1 = map(i-1, 0, data.size()-1, borderW, borderW+graphW);
-      float y1 = map(data.get(i-1), min, max, height-borderH, (height-borderH) - graphH);
+      float y1 = map(data.get(i-1), min, max, height-borderH, borderH);
       float x2 = map(i, 0, data.size()-1, borderW, borderW+graphW);
-      float y2 = map(data.get(i), min, max, height-borderH, (height-borderH) - graphH);
+      float y2 = map(data.get(i), min, max, height-borderH, borderH);
       
       stroke(c);
       //Draw the line from the element before to the current element
       line(x1, y1, x2, y2);
-      
-      if(mouseX >= x1 && mouseX <= x2)
-      {
-        textAlign(LEFT, CENTER);
-        stroke(211, 255, 255, 50);
-        fill(211, 255, 255, 50);
-        rect(mouseX+10, y1, 90, 30);
-        stroke(255, 0, 0);
-        fill(255, 0, 0);
-        line(mouseX, borderH, mouseX, height - borderH);
-        ellipse(x1, y1, 10, 10);
-        fill(200);
-        textSize(9);
-        text("Year: " + names.get(i-1), mouseX+12, y1+10);
-        text("Sold: " + data.get(i-1), mouseX+12, y1+20);
-      }//end if
     }//end for
     
     
@@ -176,8 +160,8 @@ class Graph
       }
       int postRecessionAvg = postRecessionTotal/numYearsPost;
       
-      float y1 = map(preRecessionAvg, min, max, height-borderH, (height-borderH) - graphH);
-      float y2 = map(postRecessionAvg, min, max, height-borderH, (height-borderH) - graphH);
+      float y1 = map(preRecessionAvg, min, max, height-borderH, borderH);
+      float y2 = map(postRecessionAvg, min, max, height-borderH, borderH);
       
       stroke(carray[i]);
       fill(carray[i]);
@@ -192,6 +176,28 @@ class Graph
       }
       
       line(x1, y1, x2, y2);
+    }
+  }
+  
+  void drawRegAmount()
+  {
+    if (mouseX >= borderW && mouseX <= width - borderW)
+    {
+      int i = (int) map(mouseX, borderW, width - borderW, 0, data.size() - 1);
+      float x = map(i, 0, data.size()-1, borderW, borderW+graphW);
+      float y = map(data.get(i), min, max, height-borderH, borderH);
+      textAlign(LEFT, CENTER);
+      stroke(211, 255, 255, 50);
+      fill(211, 255, 255, 50);
+      rect(mouseX+10, y, 90, 30);
+      stroke(255, 0, 0);
+      fill(255, 0, 0);
+      line(mouseX, borderH, mouseX, height - borderH);
+      ellipse(x, y, 10, 10);
+      fill(200);
+      textSize(9);
+      text("Year: " + names.get(i), mouseX+12, y+10);
+      text("Sold: " + data.get(i), mouseX+12, y+20);
     }
   }
 }
