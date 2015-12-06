@@ -94,7 +94,6 @@ void draw()
     {
       d1.hide();
       marqueTotalGraph.drawBarChart();
-      marqueTotalGraph.drawRegAmount();
       break;
     }
     
@@ -104,7 +103,6 @@ void draw()
     {
       d1.hide();
       sortedTotalGraph.drawBarChart();
-      sortedTotalGraph.drawRegAmount();
       break;
     }
     
@@ -124,7 +122,6 @@ void draw()
     {
       d1.hide();
       yearTotalGraph.drawBarChart();
-      yearTotalGraph.drawRegAmount();
       break;
     }
     
