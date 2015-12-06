@@ -103,7 +103,6 @@ class Graph
     //There is one less line than there is data values when drawing a trend line graph
     rectWidth = graphW/ (float)(data.size()-1);
     //Set the colour for the line
-    stroke(c);
     
     //For each data value
     for(int i=1; i<data.size(); i++)
@@ -114,8 +113,25 @@ class Graph
       float x2 = map(i, 0, data.size()-1, borderW, borderW+graphW);
       float y2 = map(data.get(i), min, max, height-borderH, (height-borderH) - graphH);
       
+      stroke(c);
       //Draw the line from the element before to the current element
       line(x1, y1, x2, y2);
+      
+      if(mouseX >= x1 && mouseX <= x2)
+      {
+        textAlign(LEFT, CENTER);
+        stroke(211, 255, 255, 50);
+        fill(211, 255, 255, 50);
+        rect(mouseX+10, y1, 90, 30);
+        stroke(255, 0, 0);
+        fill(255, 0, 0);
+        line(mouseX, borderH, mouseX, height - borderH);
+        ellipse(x1, y1, 10, 10);
+        fill(200);
+        textSize(9);
+        text("Year: " + names.get(i-1), mouseX+12, y1+10);
+        text("Sold: " + data.get(i-1), mouseX+12, y1+20);
+      }//end if
     }//end for
     
     
