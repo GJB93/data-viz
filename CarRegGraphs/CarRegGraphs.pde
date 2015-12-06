@@ -94,6 +94,7 @@ void draw()
     {
       d1.hide();
       marqueTotalGraph.drawBarChart();
+      marqueTotalGraph.drawRegAmount();
       break;
     }
     
@@ -103,6 +104,7 @@ void draw()
     {
       d1.hide();
       sortedTotalGraph.drawBarChart();
+      sortedTotalGraph.drawRegAmount();
       break;
     }
     
@@ -112,6 +114,7 @@ void draw()
     {
       d1.hide();
       slopegraph.drawSlopeGraph();
+      
       break;
     }
     
@@ -121,6 +124,7 @@ void draw()
     {
       d1.hide();
       yearTotalGraph.drawBarChart();
+      yearTotalGraph.drawRegAmount();
       break;
     }
     
@@ -142,7 +146,7 @@ void gui()
 {
   cp5 = new ControlP5(this);
   
-  Group g1 = cp5.addGroup("Choose Graph").setBackgroundColor(color(bgColor, 50)).setBackgroundHeight(150);
+  Group g1 = cp5.addGroup("Choose Graph").setBackgroundColor(color(255, 50)).setBackgroundHeight(150);
   cp5.addRadioButton("radio")
     .setPosition(10, 20)
     .setItemWidth(20)
@@ -161,7 +165,7 @@ void gui()
     .setPosition(width-160, 20)
     .setWidth(150)
     .setItemHeight(10)
-    .setBackgroundColor(color(bgColor, 50))
+    .setBackgroundColor(color(255, 50))
     .close()
     .hide()
     ;
@@ -176,7 +180,7 @@ void gui()
                   .addItem(g1)
                   ;
   accordion.setCollapseMode(Accordion.MULTI);
-  accordion.close(0);
+  accordion.open(0);
 }
 
 void radio(int theC)

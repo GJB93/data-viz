@@ -187,14 +187,14 @@ class Graph
       float x = map(i, 0, data.size()-1, borderW, borderW+graphW);
       float y = map(data.get(i), min, max, height-borderH, borderH);
       textAlign(LEFT, CENTER);
-      stroke(211, 255, 255, 50);
-      fill(211, 255, 255, 50);
+      stroke(249, 241, 220);
+      fill(249, 241, 220);
       rect(mouseX+10, y, 90, 30);
       stroke(255, 0, 0);
       fill(255, 0, 0);
       line(mouseX, borderH, mouseX, height - borderH);
       ellipse(x, y, 10, 10);
-      fill(200);
+      fill(50);
       textSize(9);
       text("Year: " + names.get(i), mouseX+12, y+10);
       text("Sold: " + data.get(i), mouseX+12, y+20);
