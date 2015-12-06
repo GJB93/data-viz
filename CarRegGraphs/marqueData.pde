@@ -21,17 +21,22 @@ class MarqueData
   {
     String[] fields = line.split(",");
     this.marqueName = fields[0];
-    this.years = new ArrayList<String>();
-    //Creating a string array to copy into the years ArrayList
-    String[] y = {"2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015"};
-    for(int i=0; i<y.length;i++)
-    {
-      years.add(y[i]);
-    }
     this.regNums = new ArrayList<Integer>();
     for(int i=1; i<fields.length; i++)
     {
       this.regNums.add(Integer.parseInt(fields[i]));
+    }
+    this.years = new ArrayList<String>();
+    for(int i=0; i<regNums.size();i++)
+    {
+      if((i+6)<10)
+      {
+        years.add("200" + (i+6));
+      }
+      else
+      {
+        years.add("20" + (i+6));
+      }
     }
     total = calculateTotal(regNums);
     max = getMax(regNums);
