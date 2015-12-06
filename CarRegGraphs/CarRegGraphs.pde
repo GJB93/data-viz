@@ -40,7 +40,7 @@ void setup()
   //Setting the size of the presentation and the border width and height
   size(900, 900);
   borderW = width*0.1f;
-  borderH = height*0.1f; //<>// //<>//
+  borderH = height*0.1f; //<>//
   //Loading the data from the .csv file
   loadData();
   

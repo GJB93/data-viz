@@ -41,7 +41,7 @@ class Axis
     verticalIncrement = 10;
     horizontalIncrement = rectW;
     dataRange = max-min;
-    numberInc = max/ verticalIncrement;
+    numberInc = (float) dataRange/ (float)verticalIncrement;
     tickIncrement = graphH/ verticalIncrement;
   }
   
