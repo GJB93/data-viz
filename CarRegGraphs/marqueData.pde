@@ -8,6 +8,8 @@ class MarqueData
   //This ArrayList holds all the yearly registration numbers for the car marque
   ArrayList<Integer> regNums;
   ArrayList<String> years;
+  
+  //Each marque has its own colour
   color c;
   
   
@@ -22,10 +24,14 @@ class MarqueData
     String[] fields = line.split(",");
     this.marqueName = fields[0];
     this.regNums = new ArrayList<Integer>();
+    //Filling the regNums ArrayList with each value on the
+    //line of data
     for(int i=1; i<fields.length; i++)
     {
       this.regNums.add(Integer.parseInt(fields[i]));
     }
+    
+    //Filling the years ArrayList with appropriate values
     this.years = new ArrayList<String>();
     for(int i=0; i<regNums.size();i++)
     {
@@ -41,6 +47,7 @@ class MarqueData
     total = calculateTotal(regNums);
     max = getMax(regNums);
     min = getMin(regNums);
+    //Setting the marque's colour
     this.c = color(random(127, 255), random(127, 255), random(127, 255));
   }
   

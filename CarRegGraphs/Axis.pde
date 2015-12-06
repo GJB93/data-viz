@@ -19,11 +19,13 @@ class Axis
   float numberInc;
   float tickIncrement;
   
+  //Constructors for the Axis class
   Axis()
   {
     this(0, width, width*0.1f, height*0.1f, 0);
   }
   
+  //Base constructor
   Axis(int max, int min, float borderW, float borderH, float rectW)
   {
     //Set the max and min values
@@ -45,7 +47,7 @@ class Axis
     tickIncrement = graphH/ verticalIncrement;
   }
   
-  //Constructor for the Axis class
+  //Constructor for an Integer and String ArrayList
   Axis(ArrayList<Integer> yText, ArrayList<String> xText, int max, int min, float borderW, float borderH, float rectW)
   {
     this(max, min, borderW, borderH, rectW);
@@ -58,6 +60,7 @@ class Axis
     this.xText.addAll(xText);
   }
   
+  //Constructor for a MarqueData ArrayList
   Axis(ArrayList<MarqueData> data, int max, int min, float borderW, float borderH, float rectW)
   {
     this(max, min, borderW, borderH, rectW);
@@ -105,6 +108,7 @@ class Axis
     }//end for
   }
   
+  //Method to draw the X-ticks specific for bar graphs
   void drawBarXTicks()
   {
     textSize(10);
@@ -150,6 +154,7 @@ class Axis
     }//end for
   }
   
+  //Draws an axis for a slopegraph
   void drawSlopeAxis()
   {
     float x1 = map(width*0.25f, 0, width, borderW, borderW+graphW);

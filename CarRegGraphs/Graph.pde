@@ -16,11 +16,13 @@ class Graph
   color[] carray;
   String title;
   
+  //Constructors for Graph class
   Graph()
   {
     this("", 0, 0, 0, 0, 0);
   }
   
+  //Base constructor
   Graph(String title, int dataSize, int max, int min, float borderW, float borderH)
   {
     this.title = title;
@@ -33,6 +35,7 @@ class Graph
     rectWidth = graphW/ (float) (dataSize);
   }
   
+  //Constructor that only uses a single colour for the graph
   Graph(String title, ArrayList<Integer> data, ArrayList<String> names, int max, int min, float borderW, float borderH, color c)
   {
     this(title, data.size(), max, min, borderW, borderH);
@@ -43,8 +46,8 @@ class Graph
     this.c = c;
   }
   
-  //Constructor recieves the data, the value to map the data against, the maximum and minimum values for scaling the graph,
-  //the border values for the graph and the colour to use for the trend lines
+  
+  //Constructor that uses an array of colours to draw the graph
   Graph(String title, ArrayList<Integer> data, ArrayList<String> names, int max, int min, float borderW, float borderH, color[] carray)
   {
     this(title, data.size(), max, min, borderW, borderH);
@@ -55,6 +58,7 @@ class Graph
     this.carray = carray;
   }
   
+  //Constructor that uses a MarqueData ArrayList to construct a graph
   Graph(String title, ArrayList<MarqueData> data, int max, int min, float borderW, float borderH, color[] carray)
   {
     this(title, data.size(), max, min, borderW, borderH);
@@ -66,6 +70,7 @@ class Graph
   //Method to draw a bar chart using the data input
   void drawBarChart()
   {
+    //Write the graph title
     fill(255);
     textAlign(CENTER, CENTER);
     textSize(12);
@@ -78,6 +83,7 @@ class Graph
       float x = map(i, 0, data.size(), borderW, borderW+graphW);
       float y = map(data.get(i), min, max, height-borderH, borderH);
       
+      //Each bar has its own colour
       fill(carray[i]);
       //Draw the bar
       rect(x, y, rectWidth, (height-borderH)-y);
@@ -94,8 +100,10 @@ class Graph
     
   }
   
+  //Method to draw a trend line using the data given
   void drawTrendLine()
   {
+    //Write the graph title
     fill(255);
     textAlign(CENTER, CENTER);
     textSize(12);
@@ -130,39 +138,53 @@ class Graph
     
   }
   
+  //Method to draw a slopegraph for two sets of values
   void drawSlopeGraph()
   {
+    //Setting some defaults used to draw the graph
     int numYears = 7;
     float x1 = map(width*0.25f, 0, width, borderW, borderW+graphW);
     float x2 = map(width-(width*0.25f), 0, width, borderW, borderW+graphW);
     float tWidth = 50;
     axis = new Axis();
 
+    //Drawing the slopegraph axis
     axis.drawSlopeAxis();
     
+    //Writing the title for the graph
     fill(255);
     textAlign(CENTER, CENTER);
     textSize(12);
     text(title, width/2, borderH*0.5f);
     textSize(8);
+    
+    //Calculating data for the top ten marque totals
     for(int i=mData.size()-1; i>mData.size()-11; i--)
     {
+      //Resetting the totals
       int preRecessionTotal = 0;
       int postRecessionTotal = 0;
+      
+      //Calculating the pre-recession averages for each marque
       for(int j=0; j<numYears; j++)
       {
         preRecessionTotal += mData.get(i).regNums.get(j);
       }
       int preRecessionAvg = preRecessionTotal/numYears;
+      
+      //Calculating the post-recession averages for each marque
       for(int j=numYears; j<mData.get(0).regNums.size(); j++)
       {
         postRecessionTotal += mData.get(i).regNums.get(j);
       }
       int postRecessionAvg = postRecessionTotal/numYears;
       
+      //Setting the y value according to the value calculated
       float y1 = map(preRecessionAvg, min, max, height-borderH, borderH);
       float y2 = map(postRecessionAvg, min, max, height-borderH, borderH);
       
+      //Writing the name and average for each marque for both periods
+      //while drawing the lines using the marque's given colour
       stroke(carray[i]);
       fill(carray[i]);
       text(mData.get(i).marqueName + " : " + preRecessionAvg, x1-tWidth, y1);
@@ -175,10 +197,15 @@ class Graph
         text(mData.get(i).marqueName + " : " + postRecessionAvg, x2+tWidth, y2);
       }
       
+      //Drawing the slope
       line(x1, y1, x2, y2);
     }
   }
   
+  /*
+    Method used for tracking the mouse postition, which allows the user to
+    see the specific value for each given year when howvering over the graph
+  */
   void drawRegAmount()
   {
     if (mouseX >= borderW && mouseX <= width - borderW)
