@@ -30,7 +30,7 @@ Switching between the graphs is done by using a ControlP5 controller, which has 
 
 ![Accordion menu](https://github.com/GJB93/data-viz/blob/master/images/controlP5radio.PNG)
 
-There is also a dropdown menu for choosing which marque's data to show when the trend line is being shown
+There is also a dropdown menu for choosing which marque's data to show which the trend line is being shown
 
 ![Dropdown menu](https://github.com/GJB93/data-viz/blob/master/images/dropdown.PNG)
 
