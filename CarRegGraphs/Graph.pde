@@ -3,6 +3,7 @@ class Graph
   //Creating fields needed for drawing a graph
   Axis axis;
   ArrayList<Integer> data;
+  ArrayList<Integer> data2;
   ArrayList<String> names;
   ArrayList<MarqueData> mData;
   int max;
@@ -54,6 +55,18 @@ class Graph
     this.data = new ArrayList<Integer>();
     this.names = new ArrayList<String>();
     this.data.addAll(data);
+    this.names.addAll(names);
+    this.carray = carray;
+  }
+  
+  Graph(String title, ArrayList<Integer> data, ArrayList<Integer> data2, ArrayList<String> names, int max, int min, float borderW, float borderH, color[] carray)
+  {
+    this(title, data.size(), max, min, borderW, borderH);
+    this.data = new ArrayList<Integer>();
+    this.data2 = new ArrayList<Integer>();
+    this.names = new ArrayList<String>();
+    this.data.addAll(data);
+    this.data2.addAll(data2);
     this.names.addAll(names);
     this.carray = carray;
   }
@@ -159,42 +172,24 @@ class Graph
     textSize(8);
     
     //Calculating data for the top ten marque totals
-    for(int i=mData.size()-1; i>mData.size()-11; i--)
+    for(int i=data.size()-1; i>data.size()-11; i--)
     {
-      //Resetting the totals
-      int preRecessionTotal = 0;
-      int postRecessionTotal = 0;
-      
-      //Calculating the pre-recession averages for each marque
-      for(int j=0; j<numYears; j++)
-      {
-        preRecessionTotal += mData.get(i).regNums.get(j);
-      }
-      int preRecessionAvg = preRecessionTotal/numYears;
-      
-      //Calculating the post-recession averages for each marque
-      for(int j=numYears; j<mData.get(0).regNums.size(); j++)
-      {
-        postRecessionTotal += mData.get(i).regNums.get(j);
-      }
-      int postRecessionAvg = postRecessionTotal/numYears;
-      
       //Setting the y value according to the value calculated
-      float y1 = map(preRecessionAvg, min, max, height-borderH, borderH);
-      float y2 = map(postRecessionAvg, min, max, height-borderH, borderH);
+      float y1 = map(data.get(i), min, max, height-borderH, borderH);
+      float y2 = map(data2.get(i), min, max, height-borderH, borderH);
       
       //Writing the name and average for each marque for both periods
       //while drawing the lines using the marque's given colour
       stroke(carray[i]);
       fill(carray[i]);
-      text(mData.get(i).marqueName + " : " + preRecessionAvg, x1-tWidth, y1);
-      if((mData.get(i).marqueName).equals("RENAULT"))
+      text(names.get(i) + " : " + data.get(i), x1-tWidth, y1);
+      if((names.get(i)).equals("RENAULT"))
       {
-        text(mData.get(i).marqueName + " : " + postRecessionAvg, x2+(tWidth*2.2f), y2);
+        text(names.get(i) + " : " + data2.get(i), x2+(tWidth*2.2f), y2);
       }
       else
       {
-        text(mData.get(i).marqueName + " : " + postRecessionAvg, x2+tWidth, y2);
+        text(names.get(i) + " : " + data2.get(i), x2+tWidth, y2);
       }
       
       //Drawing the slope

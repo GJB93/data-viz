@@ -3,6 +3,8 @@ class MarqueData
   //Setting the fields for the class
   String marqueName;
   int total;
+  int preRecessionAvg;
+  int postRecessionAvg;
   int max;
   int min;
   //This ArrayList holds all the yearly registration numbers for the car marque
@@ -45,6 +47,7 @@ class MarqueData
       }
     }
     total = calculateTotal(regNums);
+    calculateAvg();
     max = getMax(regNums);
     min = getMin(regNums);
     //Setting the marque's colour
@@ -64,6 +67,27 @@ class MarqueData
     
     return total;
   }//end calculateYearlyValues()
+  
+  void calculateAvg()
+  {
+    int numYears = 7;
+    int preRecessionTotal = 0;
+    int postRecessionTotal = 0;
+    
+    //Calculating the pre-recession averages for each marque
+    for(int i=0; i<numYears; i++)
+    {
+      preRecessionTotal += regNums.get(i);
+    }
+    this.preRecessionAvg = preRecessionTotal/numYears;
+    
+    //Calculating the post-recession averages for each marque
+    for(int i=numYears; i<regNums.size(); i++)
+    {
+      postRecessionTotal += regNums.get(i);
+    }
+    this.postRecessionAvg = postRecessionTotal/numYears;
+  }
   
   //Method to find the highest value across all years
   int getMax(ArrayList<Integer> a)

@@ -7,6 +7,9 @@ DropdownList d1;
 ArrayList<MarqueData> marqueData = new ArrayList<MarqueData>();
 ArrayList<MarqueData> sortedData = new ArrayList<MarqueData>();
 ArrayList<Integer> yearlyTotals = new ArrayList<Integer>();
+ArrayList<Integer> preRecession = new ArrayList<Integer>();
+ArrayList<Integer> postRecession = new ArrayList<Integer>();
+ArrayList<String> sortedNames = new ArrayList<String>();
 
 //Objects to hold every graph that is to be created
 ArrayList<Graph> marqueGraph;
@@ -68,10 +71,8 @@ void setup()
     yearColors[i] = color(random(127, 255), random(127, 255), random(127, 255));
   }
   
-  //Creating a slopegraph using the top 10 marques in the sortedData ArrayList
-  slopegraph = new Graph("Top 10 Marques", sortedData, slopeMax, slopeMin, borderW, borderH, sortedColors);
-  
   //Calling methods used to create the graphs needed for the visualisation
+  createSlopegraph();
   createYearlyTotalGraph();
   createMarqueGraphs();
   createTotalsGraph();
@@ -273,6 +274,23 @@ void loadData()
 }//end loadData()
 
 /*
+  This method creates a slopegraph using the pre-recession an post-recession
+  average registration numbers for the top 10 marques
+*/
+void createSlopegraph()
+{
+  
+  for(int i=sortedData.size()-1; i>sortedData.size()-11; i--)
+  {
+    preRecession.add(sortedData.get(i).preRecessionAvg);
+    postRecession.add(sortedData.get(i).postRecessionAvg);
+    sortedNames.add(sortedData.get(i).marqueName);
+  }
+  println(sortedData.size());
+  slopegraph = new Graph("Top 10 Marques", preRecession, postRecession, sortedNames, slopeMax, slopeMin, borderW, borderH, sortedColors);
+}
+
+/*
   This method creates the graphs that show the total number
   of cars registered for each year between 2002 and 2015
 */
@@ -363,7 +381,6 @@ void createTotalsGraph()
   //Creating ArrayLists to allow the graphs to be created properly
   ArrayList<String> marqueNames = new ArrayList<String>();
   ArrayList<Integer> marqueTotals = new ArrayList<Integer>();
-  ArrayList<String> sortedNames = new ArrayList<String>();
   ArrayList<Integer> sortedTotals = new ArrayList<Integer>();
   int maxTotal = maxInit;
   int minTotal = minInit;
