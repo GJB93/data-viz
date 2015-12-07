@@ -33,3 +33,5 @@ Switching between the graphs is done by using a ControlP5 controller, which has 
 There is also a dropdown menu for choosing which marque's data to show when the trend line is being shown
 
 ![Dropdown menu](https://github.com/GJB93/data-viz/blob/master/images/dropdown.PNG)
+
+Each graph and axis is created as an object, and can be rendered by calling a method to draw the graph needed. This allows multiple graphs to be stored and then displayed using loops.
