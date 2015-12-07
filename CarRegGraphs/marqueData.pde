@@ -3,6 +3,7 @@ class MarqueData
   //Setting the fields for the class
   String marqueName;
   int total;
+  int avg;
   int preRecessionAvg;
   int postRecessionAvg;
   int max;
@@ -47,6 +48,7 @@ class MarqueData
       }
     }
     total = calculateTotal(regNums);
+    avg = total/regNums.size();
     calculateAvg();
     max = getMax(regNums);
     min = getMin(regNums);

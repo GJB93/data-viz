@@ -17,6 +17,8 @@ Graph yearTotalGraph;
 Graph marqueTotalGraph;
 Graph sortedTotalGraph;
 Graph slopegraph;
+Graph preRecessionPresence;
+Graph postRecessionPresence;
 
 //Border variables
 float borderW;
@@ -75,7 +77,10 @@ void setup()
   createSlopegraph();
   createYearlyTotalGraph();
   createMarqueGraphs();
-  createTotalsGraph();
+  createAvgsGraph();
+  
+  preRecessionPresence = new Graph("Pre-Recession Presence", preRecession, sortedNames, slopeMax, slopeMin, borderW, borderH, sortedColors);
+  postRecessionPresence = new Graph("Post-Recession Presence", postRecession, sortedNames, 11000, slopeMin, borderW, borderH, sortedColors);
   
   //Creating a ControlP5 control panel used to swap between the various graphs
   gui();
@@ -89,7 +94,7 @@ void draw()
   //Using a switch statement to determine which graph to draw
   switch(mode)
   {
-    //Case 0 shows a barchart for each marque's total registrations between 2006 and 2015
+    //Case 0 shows a barchart for each marque's average registrations between 2006 and 2015
     //The graph is sorted in alphabetical order relating to the marque name
     case 0:
     {
@@ -98,8 +103,8 @@ void draw()
       break;
     }
     
-    //Case 1 shows a barchart for each marque's total registrations between 2006 and 2015
-    //The graph is sorted in ascending order relating to the total registrations
+    //Case 1 shows a barchart for each marque's average registrations between 2006 and 2015
+    //The graph is sorted in ascending order relating to the average registrations
     case 1:
     {
       d1.hide();
@@ -126,10 +131,28 @@ void draw()
       break;
     }
     
-    //Case 4 allows the user to show a trendline for the total number of registered cars for
-    //each marque between 2006 and 2015. 
+    //Case 4 shows a square graph, in which the area shows the presence of the top
+    //10 marque pre-recession
     case 4:
     {
+      d1.hide();
+      preRecessionPresence.drawSquareGraph();
+      break;
+    }
+    
+    //Case 5 is the same as case 4, except using post-recession averages
+    case 5:
+    {
+      d1.hide();
+      postRecessionPresence.drawSquareGraph();
+      break;
+    }
+    
+    //Case 6 allows the user to show a trendline for the total number of registered cars for
+    //each marque between 2006 and 2015. 
+    case 6:
+    {
+      
       //A dropdown list is shown to allow the user to choose which marque's data to show
       d1.show();
       marqueInd = int(d1.getValue());
@@ -155,7 +178,7 @@ void gui()
     to allow the user to switch between the different groups
     of graphs
   */
-  Group g1 = cp5.addGroup("Choose Graph").setBackgroundColor(color(255, 50)).setBackgroundHeight(150);
+  Group g1 = cp5.addGroup("Choose Graph").setBackgroundColor(color(255, 50)).setBackgroundHeight(180);
   
   /*
     Creating the radio buttons for switching graphs
@@ -164,11 +187,13 @@ void gui()
     .setPosition(10, 20)
     .setItemWidth(20)
     .setItemHeight(20)
-    .addItem("Marque Totals", 0)
-    .addItem("Sorted Totals", 1)
+    .addItem("Marque Averages", 0)
+    .addItem("Sorted Averages", 1)
     .addItem("Top 10 Marques", 2)
     .addItem("Yearly Totals", 3)
-    .addItem("Single Marque Yearly Totals", 4)
+    .addItem("Pre-Recession Presence", 4)
+    .addItem("Post-Recession Presence", 5)
+    .addItem("Single Marque Yearly Totals", 6)
     .setColorLabel(color(255))
     .activate(1)
     .moveTo(g1)
@@ -252,6 +277,18 @@ void radio(int theC)
       mode = 4;
       break;
     }
+    
+    case 5:
+    {
+      mode = 5;
+      break;
+    }
+    
+    case 6:
+    {
+      mode = 6;
+      break;
+    }
   }
 }
 
@@ -286,7 +323,6 @@ void createSlopegraph()
     postRecession.add(sortedData.get(i).postRecessionAvg);
     sortedNames.add(sortedData.get(i).marqueName);
   }
-  println(sortedData.size());
   slopegraph = new Graph("Top 10 Marques", preRecession, postRecession, sortedNames, slopeMax, slopeMin, borderW, borderH, sortedColors);
 }
 
@@ -372,30 +408,30 @@ void createMarqueGraphs()
 }
 
 /*
-  This method creates a graph showing all the total registration
+  This method creates a graph showing all the average registration
   numbers for every marque for the years 2002 to 2015. It creates
-  both an alphabetical graph and a graph sorted by each total value
+  both an alphabetical graph and a graph sorted by each average value
 */
-void createTotalsGraph()
+void createAvgsGraph()
 {
   //Creating ArrayLists to allow the graphs to be created properly
   ArrayList<String> marqueNames = new ArrayList<String>();
-  ArrayList<Integer> marqueTotals = new ArrayList<Integer>();
-  ArrayList<Integer> sortedTotals = new ArrayList<Integer>();
-  int maxTotal = maxInit;
-  int minTotal = minInit;
+  ArrayList<Integer> marqueAvgs = new ArrayList<Integer>();
+  ArrayList<Integer> sortedAvgs = new ArrayList<Integer>();
+  int maxAvg = maxInit;
+  int minAvg = minInit;
   
-  //Finding the maximum and minimum total values across all marques
+  //Finding the maximum and minimum average values across all marques
   for(int i=0; i<marqueData.size(); i++)
   {
-    if(marqueData.get(i).total > maxTotal)
+    if(marqueData.get(i).avg > maxAvg)
     {
-      maxTotal = marqueData.get(i).total;
+      maxAvg = marqueData.get(i).avg;
     }
     
-    if(marqueData.get(i).total < minTotal)
+    if(marqueData.get(i).avg < minAvg)
     {
-      minTotal = marqueData.get(i).total;
+      minAvg = marqueData.get(i).avg;
     }
   }
   
@@ -404,18 +440,19 @@ void createTotalsGraph()
   for(MarqueData data: marqueData)
   {
     marqueNames.add(data.marqueName);
-    marqueTotals.add(data.total);
+    marqueAvgs.add(data.avg);
   }
-  
+  //sortedNames.clear();
+  sortedNames = new ArrayList<String>();
   for(MarqueData data: sortedData)
   {
     sortedNames.add(data.marqueName);
-    sortedTotals.add(data.total);
+    sortedAvgs.add(data.avg);
   }
   
   //Creating the sorted and alphabetical graphs
-  marqueTotalGraph = new Graph("Alphabetical Marque Totals", marqueTotals, marqueNames, maxTotal, minTotal, borderW, borderH, marqueColors);
-  sortedTotalGraph = new Graph("Sorted Marque Totals", sortedTotals, sortedNames, maxTotal, minTotal, borderW, borderH, sortedColors);
+  marqueTotalGraph = new Graph("Alphabetical Marque Averages", marqueAvgs, marqueNames, maxAvg, minAvg, borderW, borderH, marqueColors);
+  sortedTotalGraph = new Graph("Sorted Marque Averages", sortedAvgs, sortedNames, maxAvg, minAvg, borderW, borderH, sortedColors);
 }
 
 /*
@@ -484,25 +521,25 @@ int partition(ArrayList<MarqueData> data, int left, int right)
   //in the ArrayList
   MarqueData temp;
   
-  //The pivot is the total value found at the index that
+  //The pivot is the average value found at the index that
   //is halfway between the left and right indexes
-  int pivot = data.get((left+right)/2).total;
+  int pivot = data.get((left+right)/2).avg;
   
   //While the left index variable is less than or equal
   //to the value of the right index variable
   while(i <= j)
   {
-    //While the total value at index i is less than the
-    //total value at the pivot index
-    while(data.get(i).total < pivot)
+    //While the average value at index i is less than the
+    //average value at the pivot index
+    while(data.get(i).avg < pivot)
     {
       //Increment the position of the left index
       i++;
     }
     
-    //While the total value at index j is greater than the
+    //While the average value at index j is greater than the
     //value at the pivot index
-    while(data.get(j).total > pivot)
+    while(data.get(j).avg > pivot)
     {
       //Decrement the position of the roght index
       j--;

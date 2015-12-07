@@ -155,7 +155,6 @@ class Graph
   void drawSlopeGraph()
   {
     //Setting some defaults used to draw the graph
-    int numYears = 7;
     float x1 = map(width*0.25f, 0, width, borderW, borderW+graphW);
     float x2 = map(width-(width*0.25f), 0, width, borderW, borderW+graphW);
     float tWidth = 50;
@@ -168,10 +167,10 @@ class Graph
     fill(255);
     textAlign(CENTER, CENTER);
     textSize(12);
-    text(title, width/2, borderH*0.5f);
+    text(title, width*0.5f, borderH*0.5f);
     textSize(8);
     
-    //Calculating data for the top ten marque totals
+    //Plotting the data for the top ten marque totals
     for(int i=data.size()-1; i>data.size()-11; i--)
     {
       //Setting the y value according to the value calculated
@@ -195,6 +194,37 @@ class Graph
       //Drawing the slope
       line(x1, y1, x2, y2);
     }
+  }
+  
+  void drawSquareGraph()
+  {
+    ArrayList<PVector> squarePos = new ArrayList<PVector>();
+    float graphArea = graphW*graphH;
+    //Writing the title for the graph
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(12);
+    
+    //Writing the title of the graph
+    text(title, width*0.5f, borderH*0.5f);
+    textSize(8);
+    stroke(255);
+    noFill();
+    
+    textAlign(LEFT);
+    for(int i=data.size()-1; i > data.size()-11; i--)
+    {
+      noFill();
+      float squareArea = map(data.get(i), min, max, 0, graphArea);
+      float w = sqrt(squareArea);
+      float h = sqrt(squareArea);
+      squarePos.add(new PVector(borderW, borderH));
+      stroke(carray[i]);
+      rect(squarePos.get((data.size()-1) - i).x, squarePos.get((data.size()-1) - i).y, w, h);
+      fill(carray[i]);
+      text(names.get(i) + ": " + data.get(i), squarePos.get((data.size()-1) - i).x+5, squarePos.get((data.size()-1) - i).y+(h-1));
+    }
+    
   }
   
   /*
