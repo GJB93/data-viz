@@ -35,3 +35,5 @@ There is also a dropdown menu for choosing which marque's data to show when the 
 ![Dropdown menu](https://github.com/GJB93/data-viz/blob/master/images/dropdown.PNG)
 
 Each graph and axis is created as an object, and can be rendered by calling a method to draw the graph needed. This allows multiple graphs to be stored and then displayed using loops.
+
+Each marque is given its own respective colour when a MarqueData object is constructed, which allows for consistency of colours between each respective graph.
