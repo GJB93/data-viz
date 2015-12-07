@@ -75,12 +75,11 @@ void setup()
   
   //Calling methods used to create the graphs needed for the visualisation
   createSlopegraph();
+  preRecessionPresence = new Graph("Pre-Recession Presence", preRecession, sortedNames, slopeMax, slopeMin, borderW, borderH, sortedColors);
+  postRecessionPresence = new Graph("Post-Recession Presence", postRecession, sortedNames, 11000, slopeMin, borderW, borderH, sortedColors);
   createYearlyTotalGraph();
   createMarqueGraphs();
   createAvgsGraph();
-  
-  preRecessionPresence = new Graph("Pre-Recession Presence", preRecession, sortedNames, slopeMax, slopeMin, borderW, borderH, sortedColors);
-  postRecessionPresence = new Graph("Post-Recession Presence", postRecession, sortedNames, 11000, slopeMin, borderW, borderH, sortedColors);
   
   //Creating a ControlP5 control panel used to swap between the various graphs
   gui();
